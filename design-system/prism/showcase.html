@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prism Analytics — Financial Intelligence Platform</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ================================================================
+       TOKENS
+       ================================================================ */
+    :root {
+      --radius: 2px;
+      --background: oklch(0.980 0.008 80);
+      --foreground: oklch(0.172 0.012 75);
+      --card: oklch(1 0 0);
+      --card-foreground: oklch(0.172 0.012 75);
+      --primary: oklch(0.623 0.140 255);
+      --primary-foreground: oklch(1 0 0);
+      --secondary: oklch(0.957 0.014 85);
+      --secondary-foreground: oklch(0.172 0.012 75);
+      --muted: oklch(0.957 0.014 85);
+      --muted-foreground: oklch(0.604 0.018 73);
+      --accent: oklch(0.965 0.015 250);
+      --accent-foreground: oklch(0.172 0.012 75);
+      --destructive: oklch(0.590 0.170 25);
+      --destructive-foreground: oklch(1 0 0);
+      --border: oklch(0.806 0.013 76);
+      --input: oklch(0.906 0.010 78);
+      --ring: oklch(0.623 0.140 255);
+      --revenue: oklch(0.623 0.140 255);
+      --profit: oklch(0.635 0.144 160);
+      --cost: oklch(0.590 0.170 25);
+      --ochre: oklch(0.700 0.140 80);
+      --ink-light: oklch(0.310 0.018 72);
+      --ink-muted: oklch(0.604 0.018 73);
+      --ink-faint: oklch(0.806 0.013 76);
+      --ink-ghost: oklch(0.906 0.010 78);
+      --grid-dot: oklch(0.172 0.012 75 / 8%);
+    }
+    .dark {
+      --background: oklch(0.165 0.010 75);
+      --foreground: oklch(0.975 0.008 80);
+      --card: oklch(0.205 0.012 75);
+      --card-foreground: oklch(0.975 0.008 80);
+      --primary: oklch(0.680 0.130 255);
+      --primary-foreground: oklch(0.165 0.010 75);
+      --secondary: oklch(0.260 0.012 75);
+      --secondary-foreground: oklch(0.975 0.008 80);
+      --muted: oklch(0.260 0.012 75);
+      --muted-foreground: oklch(0.680 0.015 73);
+      --accent: oklch(0.280 0.030 255);
+      --accent-foreground: oklch(0.975 0.008 80);
+      --destructive: oklch(0.650 0.150 25);
+      --destructive-foreground: oklch(0.165 0.010 75);
+      --border: oklch(1 0 0 / 10%);
+      --input: oklch(1 0 0 / 15%);
+      --ring: oklch(0.680 0.130 255);
+      --revenue: oklch(0.680 0.130 255);
+      --profit: oklch(0.690 0.130 160);
+      --cost: oklch(0.660 0.150 25);
+      --ochre: oklch(0.740 0.120 80);
+      --ink-light: oklch(0.800 0.010 72);
+      --ink-muted: oklch(0.680 0.015 73);
+      --ink-faint: oklch(0.400 0.010 76);
+      --ink-ghost: oklch(0.300 0.008 78);
+      --grid-dot: oklch(1 0 0 / 5%);
+    }
+
+    /* ================================================================
+       RESET & BASE
+       ================================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 12px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+
+    /* ================================================================
+       1. LOGIN OVERLAY
+       ================================================================ */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: oklch(0.172 0.012 75 / 85%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+    .login-overlay.hidden { opacity: 0; pointer-events: none; }
+    .login-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      width: 380px;
+      max-width: 90vw;
+      position: relative;
+    }
+    .login-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; font-weight: 500; }
+    .login-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; margin-bottom: 24px; }
+    .login-title span { font-style: italic; font-weight: 400; color: var(--primary); }
+    .login-group { margin-bottom: 16px; }
+    .login-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 6px; }
+    .login-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--background);
+      color: var(--foreground);
+      font-size: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .login-input:focus { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.623 0.140 255 / 15%); }
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--foreground);
+      color: var(--background);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.15s;
+    }
+    .login-btn:hover { opacity: 0.85; }
+    .login-skip {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      font-size: 10px;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .login-skip:hover { color: var(--foreground); }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      font-size: 9px;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+    .login-divider::before, .login-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ================================================================
+       2. NAVIGATION
+       ================================================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--background);
+      border-bottom: 2px solid var(--foreground);
+      padding: 0 32px;
+      transition: background 0.2s;
+    }
+    .nav-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo { font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; }
+    .nav-logo span { font-style: italic; font-weight: 400; color: var(--primary); }
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-link {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.15s;
+    }
+    .nav-link:hover { color: var(--foreground); text-decoration: none; }
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--foreground);
+      font-size: 20px;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .theme-btn {
+      background: var(--foreground);
+      color: var(--background);
+      border: none;
+      border-radius: var(--radius);
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'IBM Plex Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ================================================================
+       3. HERO
+       ================================================================ */
+    .hero {
+      padding: 80px 0 56px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 32px;
+    }
+    .hero-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .hero h1 span { font-style: italic; font-weight: 400; color: var(--primary); }
+    .hero-desc {
+      font-size: 12px;
+      color: var(--muted-foreground);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      border-radius: var(--radius);
+      font-size: 11px;
+      font-weight: 500;
+      font-family: 'IBM Plex Mono', monospace;
+      padding: 6px 16px;
+      height: 34px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-dark { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+    .btn-dark:hover { opacity: 0.85; text-decoration: none; }
+    .btn-blue { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+    .btn-blue:hover { opacity: 0.85; text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--foreground); border-color: var(--border); }
+    .btn-outline:hover { border-color: var(--foreground); background: var(--muted); text-decoration: none; }
+    .hero-meta {
+      text-align: right;
+      font-size: 10px;
+      color: var(--muted-foreground);
+      line-height: 2;
+    }
+    .hero-meta strong { color: var(--foreground); font-weight: 500; }
+
+    /* ================================================================
+       4. LOGOS
+       ================================================================ */
+    .logos {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .logos-tag { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted-foreground); margin-bottom: 20px; }
+    .logos-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .logo-item {
+      font-family: 'Fraunces', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink-faint);
+      letter-spacing: -0.5px;
+    }
+
+    /* ================================================================
+       5. FEATURES
+       ================================================================ */
+    .features { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .features-header { margin-bottom: 32px; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .feature-idx { font-size: 9px; color: var(--ink-faint); margin-bottom: 12px; }
+    .feature-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .feature-desc { font-size: 11px; color: var(--muted-foreground); line-height: 1.7; }
+
+    /* ================================================================
+       6. DASHBOARD MOCK
+       ================================================================ */
+    .dashboard-section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .dashboard-mock {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .mock-ticker {
+      padding: 16px;
+      border: 1px solid var(--input);
+      border-radius: var(--radius);
+      text-align: center;
+    }
+    .mock-ticker-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted-foreground); margin-bottom: 6px; }
+    .mock-ticker-value { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+    .mock-ticker-delta { font-size: 10px; font-weight: 500; margin-top: 4px; }
+    .mock-chart {
+      grid-column: 1 / -1;
+      height: 120px;
+      background: var(--background);
+      border: 1px solid var(--input);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 12px 16px;
+    }
+    .mock-bar {
+      flex: 1;
+      border-radius: 1px 1px 0 0;
+      transition: height 0.3s ease;
+    }
+
+    /* ================================================================
+       7. STATS BAR
+       ================================================================ */
+    .stats {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .stat-item {
+      padding: 24px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted-foreground); margin-bottom: 6px; }
+    .stat-value { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 600; }
+    .stat-sub { font-size: 10px; color: var(--muted-foreground); margin-top: 4px; }
+
+    /* ================================================================
+       8. PRICING
+       ================================================================ */
+    .pricing { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .price-card.featured {
+      border-color: var(--primary);
+      border-width: 2px;
+    }
+    .price-badge {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: var(--primary-foreground);
+      font-size: 9px;
+      padding: 2px 10px;
+      border-radius: var(--radius);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+    .price-name { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+    .price-amount { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 700; margin-bottom: 4px; }
+    .price-amount span { font-size: 14px; font-weight: 400; color: var(--muted-foreground); }
+    .price-desc { font-size: 11px; color: var(--muted-foreground); margin-bottom: 20px; }
+    .price-features { list-style: none; text-align: left; margin-bottom: 24px; }
+    .price-features li { padding: 6px 0; font-size: 11px; border-bottom: 1px solid var(--input); display: flex; gap: 8px; }
+    .price-features li::before { content: '→'; color: var(--primary); font-weight: 500; }
+
+    /* ================================================================
+       9. TESTIMONIALS
+       ================================================================ */
+    .testimonials { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .testimonial-stars { color: var(--ochre); font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 11px; color: var(--muted-foreground); line-height: 1.8; margin-bottom: 16px; font-style: italic; }
+    .testimonial-author { font-size: 11px; font-weight: 500; }
+    .testimonial-role { font-size: 10px; color: var(--muted-foreground); }
+
+    /* ================================================================
+       10. BLOG
+       ================================================================ */
+    .blog { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .blog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .blog-img {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--primary-foreground);
+      font-weight: 500;
+    }
+    .blog-body { padding: 20px; }
+    .blog-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+    .blog-title { font-family: 'Fraunces', serif; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+    .blog-excerpt { font-size: 11px; color: var(--muted-foreground); line-height: 1.7; margin-bottom: 12px; }
+    .blog-meta { font-size: 9px; color: var(--ink-faint); }
+
+    /* ================================================================
+       11. FAQ
+       ================================================================ */
+    .faq { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .faq-list { max-width: 700px; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--foreground);
+      font-family: 'IBM Plex Mono', monospace;
+      width: 100%;
+      text-align: left;
+    }
+    .faq-question:hover { color: var(--primary); }
+    .faq-arrow { font-size: 14px; transition: transform 0.25s ease; color: var(--muted-foreground); }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-size: 11px;
+      color: var(--muted-foreground);
+      line-height: 1.8;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; }
+    .faq-answer-inner { padding-bottom: 16px; }
+
+    /* ================================================================
+       12. NEWSLETTER CTA
+       ================================================================ */
+    .newsletter {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .newsletter-box {
+      background: var(--foreground);
+      color: var(--background);
+      border-radius: var(--radius);
+      padding: 48px;
+      text-align: center;
+    }
+    .newsletter-box h2 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+    .newsletter-box h2 span { font-style: italic; font-weight: 400; }
+    .newsletter-box p { font-size: 11px; opacity: 0.6; margin-bottom: 24px; }
+    .newsletter-form { display: flex; gap: 8px; justify-content: center; max-width: 400px; margin: 0 auto; }
+    .newsletter-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid oklch(1 0 0 / 20%);
+      border-radius: var(--radius);
+      background: oklch(1 0 0 / 10%);
+      color: var(--background);
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      outline: none;
+    }
+    .newsletter-input::placeholder { color: oklch(1 0 0 / 40%); }
+    .newsletter-input:focus { border-color: oklch(1 0 0 / 40%); }
+    .newsletter-btn {
+      padding: 8px 20px;
+      background: var(--background);
+      color: var(--foreground);
+      border: none;
+      border-radius: var(--radius);
+      font-size: 11px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .newsletter-btn:hover { opacity: 0.9; }
+
+    /* ================================================================
+       13. CONTACT
+       ================================================================ */
+    .contact { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+    .contact-info { font-size: 11px; color: var(--muted-foreground); line-height: 1.8; }
+    .contact-info h3 { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; color: var(--foreground); margin-bottom: 16px; }
+    .contact-item { margin-bottom: 16px; }
+    .contact-item-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; color: var(--foreground); margin-bottom: 4px; }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+    .c-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; margin-bottom: 6px; display: block; }
+    .c-input, .c-select, .c-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card);
+      color: var(--foreground);
+      font-size: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .c-input:focus, .c-select:focus, .c-textarea:focus { border-color: var(--ring); box-shadow: 0 0 0 2px oklch(0.623 0.140 255 / 15%); }
+    .c-textarea { min-height: 80px; resize: vertical; }
+    .c-select { appearance: auto; }
+    .c-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* ================================================================
+       14. FOOTER
+       ================================================================ */
+    .site-footer {
+      padding: 48px 0 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 32px;
+    }
+    .footer-brand .footer-logo { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+    .footer-brand .footer-logo span { font-style: italic; font-weight: 400; color: var(--primary); }
+    .footer-brand p { font-size: 11px; color: var(--muted-foreground); line-height: 1.7; max-width: 280px; }
+    .footer-col-title { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+    .footer-col a { display: block; font-size: 11px; color: var(--muted-foreground); text-decoration: none; padding: 3px 0; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--foreground); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.5px;
+    }
+
+    /* ================================================================
+       SECTION HELPERS
+       ================================================================ */
+    .s-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--primary); margin-bottom: 8px; font-weight: 500; }
+    .s-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .s-title span { font-style: italic; font-weight: 400; color: var(--primary); }
+    .s-desc { font-size: 11px; color: var(--muted-foreground); margin-bottom: 32px; max-width: 480px; line-height: 1.7; }
+
+    /* ================================================================
+       RESPONSIVE
+       ================================================================ */
+    @media (max-width: 768px) {
+      .wrap { padding: 0 16px; }
+      .nav { padding: 0 16px; }
+      .nav-links a { display: none; }
+      .nav-toggle { display: block; }
+      .hero { grid-template-columns: 1fr; padding: 48px 0 32px; }
+      .hero-meta { text-align: left; }
+      .features-grid, .pricing-grid, .testimonial-grid, .blog-grid { grid-template-columns: 1fr; }
+      .dashboard-mock { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .c-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 8px; }
+      .newsletter-form { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. LOGIN OVERLAY -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <div class="login-tag">Prism Analytics</div>
+      <div class="login-title">Sign <span>In</span></div>
+      <div class="login-group">
+        <label class="login-label">Email</label>
+        <input type="email" class="login-input" placeholder="analyst@company.com">
+      </div>
+      <div class="login-group">
+        <label class="login-label">Password</label>
+        <input type="password" class="login-input" placeholder="••••••••">
+      </div>
+      <button class="login-btn" onclick="document.getElementById('loginOverlay').classList.add('hidden')">Sign In</button>
+      <div class="login-divider">or</div>
+      <button class="login-skip" onclick="document.getElementById('loginOverlay').classList.add('hidden')">Skip to dashboard →</button>
+    </div>
+  </div>
+
+  <!-- 2. NAVIGATION -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">Prism <span>Analytics</span></div>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#blog" class="nav-link">Insights</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <button class="theme-btn" id="themeBtn">Dark</button>
+      </div>
+      <button class="nav-toggle" id="navToggle">≡</button>
+    </div>
+  </nav>
+
+  <!-- 3. HERO -->
+  <section class="hero wrap">
+    <div>
+      <div class="hero-badge">Now in Beta</div>
+      <h1>Financial <span>Intelligence</span></h1>
+      <p class="hero-desc">
+        Turn raw financial data into editorial-grade visualizations. Prism transforms P&L statements, Sankey flows, and quarterly metrics into stories your board will actually read.
+      </p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn btn-dark">Start Free Trial</a>
+        <a href="#features" class="btn btn-outline">See Features</a>
+      </div>
+    </div>
+    <div class="hero-meta">
+      <strong>Platform:</strong> Web + API<br>
+      <strong>Users:</strong> 2,400+ companies<br>
+      <strong>Uptime:</strong> 99.97%
+    </div>
+  </section>
+
+  <!-- 4. LOGOS -->
+  <section class="logos wrap">
+    <div class="logos-tag">Trusted by leading finance teams</div>
+    <div class="logos-row">
+      <div class="logo-item">Acme Corp</div>
+      <div class="logo-item">Meridian</div>
+      <div class="logo-item">Skyline</div>
+      <div class="logo-item">Clearview</div>
+      <div class="logo-item">Atlas</div>
+      <div class="logo-item">Pinnacle</div>
+    </div>
+  </section>
+
+  <!-- 5. FEATURES -->
+  <section id="features" class="features wrap">
+    <div class="features-header">
+      <div class="s-tag">Capabilities</div>
+      <h2 class="s-title">Built for <span>Clarity</span></h2>
+      <p class="s-desc">Every feature is designed to make financial data more readable, more beautiful, and more actionable.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-idx">01</div>
+        <div class="feature-title">Sankey Flow Charts</div>
+        <div class="feature-desc">Trace every dollar from revenue sources through cost centers to net profit. Interactive nodes reveal breakdowns on hover.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-idx">02</div>
+        <div class="feature-title">Revenue Trend Lines</div>
+        <div class="feature-desc">SVG-drawn trend lines with peak annotations and animated data points. Bar overlays show expense comparisons.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-idx">03</div>
+        <div class="feature-title">Stacked Breakdowns</div>
+        <div class="feature-desc">Quarterly and segment breakdowns with animated stacked bars. Percentage labels embedded directly in segments.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-idx">04</div>
+        <div class="feature-title">Ticker Strips</div>
+        <div class="feature-desc">Five-metric ticker strips with delta indicators. Color-coded for revenue, profit, and cost at a glance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-idx">05</div>
+        <div class="feature-title">Dark Mode</div>
+        <div class="feature-desc">Warm dark theme preserving the editorial aesthetic. Every token adapts — backgrounds, borders, data colors, and shadows.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-idx">06</div>
+        <div class="feature-title">Accessibility</div>
+        <div class="feature-desc">WCAG AA compliant. Keyboard navigation for Sankey nodes, prefers-reduced-motion support, colorblind-safe patterns.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. DASHBOARD MOCK -->
+  <section class="dashboard-section wrap">
+    <div class="s-tag">Product</div>
+    <h2 class="s-title">The <span>Dashboard</span></h2>
+    <p class="s-desc">A live preview of Prism's editorial dashboard design — warm parchment canvas, serif display type, precision monospace data.</p>
+    <div class="dashboard-mock">
+      <div class="mock-ticker">
+        <div class="mock-ticker-label">Revenue</div>
+        <div class="mock-ticker-value" style="color: var(--revenue);">$2.8M</div>
+        <div class="mock-ticker-delta" style="color: var(--profit);">↑ 23.4%</div>
+      </div>
+      <div class="mock-ticker">
+        <div class="mock-ticker-label">Gross Profit</div>
+        <div class="mock-ticker-value" style="color: var(--profit);">$1.76M</div>
+        <div class="mock-ticker-delta" style="color: var(--profit);">↑ 18.7%</div>
+      </div>
+      <div class="mock-ticker">
+        <div class="mock-ticker-label">Net Profit</div>
+        <div class="mock-ticker-value" style="color: var(--profit);">$640k</div>
+        <div class="mock-ticker-delta" style="color: var(--profit);">↑ 12.1%</div>
+      </div>
+      <div class="mock-ticker">
+        <div class="mock-ticker-label">Net Margin</div>
+        <div class="mock-ticker-value" style="color: var(--profit);">22.5%</div>
+        <div class="mock-ticker-delta" style="color: var(--profit);">↑ 3.1pp</div>
+      </div>
+      <div class="mock-ticker">
+        <div class="mock-ticker-label">Total Costs</div>
+        <div class="mock-ticker-value" style="color: var(--cost);">$2.2M</div>
+        <div class="mock-ticker-delta" style="color: var(--profit);">↓ 4.2%</div>
+      </div>
+      <div class="mock-chart" id="mockChart"></div>
+    </div>
+  </section>
+
+  <!-- 7. STATS -->
+  <section class="stats wrap">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-label">Companies</div>
+        <div class="stat-value" style="color: var(--primary);">2,400+</div>
+        <div class="stat-sub">Active accounts</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Reports</div>
+        <div class="stat-value" style="color: var(--profit);">180k</div>
+        <div class="stat-sub">Generated monthly</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Data Points</div>
+        <div class="stat-value" style="color: var(--ochre);">4.2B</div>
+        <div class="stat-sub">Processed to date</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Uptime</div>
+        <div class="stat-value" style="color: var(--profit);">99.97%</div>
+        <div class="stat-sub">Last 12 months</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. PRICING -->
+  <section id="pricing" class="pricing wrap">
+    <div class="s-tag">Plans</div>
+    <h2 class="s-title">Simple <span>Pricing</span></h2>
+    <p class="s-desc">No per-seat fees. No hidden charges. Pay for the data volume you need.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-amount">$49<span>/mo</span></div>
+        <div class="price-desc">For small teams getting started with financial visualization.</div>
+        <ul class="price-features">
+          <li>Up to 5 dashboards</li>
+          <li>100k data points/mo</li>
+          <li>PDF export</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="width: 100%; justify-content: center;">Get Started</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Popular</div>
+        <div class="price-name">Professional</div>
+        <div class="price-amount">$149<span>/mo</span></div>
+        <div class="price-desc">For finance teams that need Sankey flows and board-ready reports.</div>
+        <ul class="price-features">
+          <li>Unlimited dashboards</li>
+          <li>1M data points/mo</li>
+          <li>Sankey flow charts</li>
+          <li>Dark mode</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn btn-dark" style="width: 100%; justify-content: center;">Start Free Trial</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-amount">Custom</div>
+        <div class="price-desc">For organizations with complex reporting and compliance needs.</div>
+        <ul class="price-features">
+          <li>Everything in Pro</li>
+          <li>Unlimited data</li>
+          <li>SSO & audit logs</li>
+          <li>API access</li>
+          <li>Dedicated support</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Contact Sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. TESTIMONIALS -->
+  <section class="testimonials wrap">
+    <div class="s-tag">What Teams Say</div>
+    <h2 class="s-title" style="margin-bottom: 32px;">Trusted by <span>CFOs</span></h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"Prism turned our monthly board deck from a chore into something we're actually proud of. The Sankey flows tell the P&L story better than any slide."</div>
+        <div class="testimonial-author">Sarah Chen</div>
+        <div class="testimonial-role">CFO, Meridian Software</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"The editorial aesthetic is exactly what we needed. Our investors comment on the quality of our reports now. That never happened before."</div>
+        <div class="testimonial-author">James Park</div>
+        <div class="testimonial-role">VP Finance, Skyline Labs</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars">★★★★☆</div>
+        <div class="testimonial-text">"Setup took 20 minutes. Connected our accounting system and had a full P&L flow chart running by lunch. The dark mode is gorgeous."</div>
+        <div class="testimonial-author">Maria Santos</div>
+        <div class="testimonial-role">Head of FP&A, Atlas Digital</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. BLOG -->
+  <section id="blog" class="blog wrap">
+    <div class="s-tag">Insights</div>
+    <h2 class="s-title" style="margin-bottom: 32px;">From the <span>Journal</span></h2>
+    <div class="blog-grid">
+      <div class="blog-card">
+        <div class="blog-img" style="background: var(--primary);">Financial Viz</div>
+        <div class="blog-body">
+          <div class="blog-badge">Tutorial</div>
+          <div class="blog-title">Reading Sankey Diagrams for P&L Analysis</div>
+          <div class="blog-excerpt">A guide to interpreting flow widths, node values, and margin annotations in income statement visualizations.</div>
+          <div class="blog-meta">Feb 10, 2026 · 8 min read</div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img" style="background: var(--profit);">Case Study</div>
+        <div class="blog-body">
+          <div class="blog-badge">Case Study</div>
+          <div class="blog-title">How Meridian Cut Board Prep Time by 60%</div>
+          <div class="blog-excerpt">Meridian's finance team replaced their manual Excel reports with Prism's automated editorial dashboards.</div>
+          <div class="blog-meta">Feb 5, 2026 · 5 min read</div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img" style="background: var(--ochre);">Design</div>
+        <div class="blog-body">
+          <div class="blog-badge">Design</div>
+          <div class="blog-title">Why We Chose Serif + Mono for Financial Data</div>
+          <div class="blog-excerpt">The typography decisions behind Prism's editorial aesthetic and why monospace makes data more trustworthy.</div>
+          <div class="blog-meta">Jan 28, 2026 · 6 min read</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. FAQ -->
+  <section class="faq wrap">
+    <div class="s-tag">Questions</div>
+    <h2 class="s-title" style="margin-bottom: 32px;">Frequently <span>Asked</span></h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question">What data sources does Prism support? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Prism connects to QuickBooks, Xero, Stripe, and any system via CSV/API. Financial data is normalized into our standard schema automatically.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Can I customize the visual style? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes — Prism uses a token-based design system. You can adjust the color palette, fonts, and layout while keeping the editorial quality intact.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">Is there a free trial? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">All Professional plans include a 14-day free trial. No credit card required. Enterprise trials are available upon request.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">How does Prism handle data security? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">All data is encrypted at rest and in transit. We're SOC 2 Type II certified. Enterprise plans include SSO, audit logs, and data residency options.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question">What's the difference between Prism and a BI tool? <span class="faq-arrow">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">BI tools optimize for exploration. Prism optimizes for communication — turning financial data into board-ready, publication-quality reports with editorial design.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. NEWSLETTER -->
+  <section class="newsletter wrap">
+    <div class="newsletter-box">
+      <h2>Stay <span>Informed</span></h2>
+      <p>Weekly insights on financial visualization, design, and analytics. No spam.</p>
+      <div class="newsletter-form">
+        <input type="email" class="newsletter-input" placeholder="your@email.com">
+        <button class="newsletter-btn">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. CONTACT -->
+  <section id="contact" class="contact wrap">
+    <div class="s-tag">Get in Touch</div>
+    <h2 class="s-title" style="margin-bottom: 32px;">Contact <span>Sales</span></h2>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h3>Let's talk about your reporting needs</h3>
+        <p>Our team will help you evaluate Prism for your organization and set up a custom demo with your actual financial data.</p>
+        <div class="contact-item" style="margin-top: 24px;">
+          <div class="contact-item-label">Email</div>
+          <div>sales@prismanalytics.com</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Response Time</div>
+          <div>Within 4 business hours</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-label">Office</div>
+          <div>San Francisco, CA</div>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="return false;">
+        <div class="c-row">
+          <div>
+            <label class="c-label">First Name</label>
+            <input type="text" class="c-input" placeholder="Sarah">
+          </div>
+          <div>
+            <label class="c-label">Last Name</label>
+            <input type="text" class="c-input" placeholder="Chen">
+          </div>
+        </div>
+        <div>
+          <label class="c-label">Work Email</label>
+          <input type="email" class="c-input" placeholder="sarah@company.com">
+        </div>
+        <div>
+          <label class="c-label">Company Size</label>
+          <select class="c-select">
+            <option>1-10 employees</option>
+            <option>11-50 employees</option>
+            <option>51-200 employees</option>
+            <option>201-1000 employees</option>
+            <option>1000+ employees</option>
+          </select>
+        </div>
+        <div>
+          <label class="c-label">Message</label>
+          <textarea class="c-textarea" placeholder="Tell us about your reporting needs..."></textarea>
+        </div>
+        <button class="btn btn-dark" style="width: 100%; justify-content: center;">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 14. FOOTER -->
+  <footer class="site-footer wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">Prism <span>Analytics</span></div>
+        <p>Editorial-grade financial visualizations for teams that take reporting seriously.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Product</div>
+        <a href="#">Dashboards</a>
+        <a href="#">Sankey Flows</a>
+        <a href="#">Reports</a>
+        <a href="#">API</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Press</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Legal</div>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+        <a href="#">SOC 2</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Prism Analytics · Confidential</span>
+      <span>© 2026 Prism Analytics, Inc.</span>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    // Dark mode toggle
+    const themeBtn = document.getElementById('themeBtn');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'dark') {
+      html.classList.add('dark');
+      themeBtn.textContent = 'Light';
+    }
+    themeBtn.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      themeBtn.textContent = isDark ? 'Light' : 'Dark';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // Dashboard mock bars
+    const bars = [40, 48, 55, 62, 58, 68, 75, 82, 76, 88, 92, 98];
+    const chart = document.getElementById('mockChart');
+    if (chart) {
+      bars.forEach((h, i) => {
+        const bar = document.createElement('div');
+        bar.className = 'mock-bar';
+        bar.style.height = h + '%';
+        bar.style.background = 'var(--revenue)';
+        bar.style.opacity = 0.5 + (h / 200);
+        chart.appendChild(bar);
+      });
+    }
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    if (navToggle) {
+      navToggle.addEventListener('click', () => {
+        const links = document.querySelector('.nav-links');
+        links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      });
+    }
+  </script>
+
+</body>
+</html>

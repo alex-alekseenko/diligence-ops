@@ -1,0 +1,3 @@
+rule_name,severity,description,workstreams_involved,evidence,analyzed_at,source_tables
+Non-Reliance on Financials,Critical,Company issued non-reliance statement. All financial analysis may be unreliable.,"['material_events', 'financial_kpis']","['8-K Item 4.02 filed', 'All financial metrics should be treated with caution']",2026-02-12T17:58:42.808494+00:00,all silver tables + gold_risk_assessment.csv
+Novel Regulatory Risk + Insider Selling,High,New regulatory risk factor identified alongside insider selling activity.,"['risk_factors', 'insider_signal']","['Novel regulatory risk factor in 10-K', 'Insider signal: bearish']",2026-02-12T17:58:42.808494+00:00,all silver tables + gold_risk_assessment.csv

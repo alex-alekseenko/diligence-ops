@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prism Grid — Revenue Dashboard + Sankey v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --canvas: #faf8f4;
+    --canvas-warm: #f4f0e8;
+    --white: #ffffff;
+    --ink: #1a1814;
+    --ink-light: #3d3830;
+    --ink-muted: #8a8278;
+    --ink-faint: #c4bfb6;
+    --ink-ghost: #e4e0d8;
+    --revenue: #4a90d9;
+    --revenue-light: #edf3fb;
+    --revenue-pale: rgba(74,144,217,0.10);
+    --profit: #3aaa6d;
+    --profit-light: #ecf7f1;
+    --profit-pale: rgba(58,170,109,0.10);
+    --cost: #d95a5a;
+    --cost-light: #fceeed;
+    --cost-pale: rgba(217,90,90,0.10);
+    --ochre: #c49a3c;
+    --ochre-light: #fdf6e8;
+    --grid-dot: rgba(26,24,20,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--canvas); color: var(--ink); font-family: 'IBM Plex Mono', monospace; min-height: 100vh; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; z-index: 0; }
+  .dashboard { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 56px 32px; }
+
+  .header { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 2px solid var(--ink); display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; animation: slideIn .7s ease-out; }
+  .header-tag { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--revenue); margin-bottom: 8px; font-weight: 500; }
+  .header h1 { font-family: 'Fraunces', serif; font-size: clamp(36px,5.5vw,60px); font-weight: 700; line-height: 1; letter-spacing: -1px; }
+  .header h1 span { font-style: italic; font-weight: 400; color: var(--revenue); }
+  .header-meta { text-align: right; font-size: 11px; color: var(--ink-muted); line-height: 1.8; }
+  .header-meta strong { color: var(--ink); font-weight: 500; }
+
+  .ticker-strip { display: flex; gap: 0; margin-bottom: 40px; border: 1px solid var(--ink-faint); border-radius: 2px; overflow: hidden; animation: slideIn .7s ease-out .1s both; }
+  .ticker-item { flex: 1; padding: 20px 24px; border-right: 1px solid var(--ink-faint); position: relative; }
+  .ticker-item:last-child { border-right: none; }
+  .ticker-item::before { content: attr(data-idx); position: absolute; top: 8px; left: 10px; font-size: 9px; color: var(--ink-faint); }
+  .ticker-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-muted); margin-bottom: 8px; }
+  .ticker-value { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 600; line-height: 1; display: flex; align-items: baseline; gap: 6px; }
+  .ticker-unit { font-size: 13px; font-weight: 400; color: var(--ink-muted); }
+  .ticker-delta { margin-top: 6px; font-size: 11px; font-weight: 500; }
+  .ticker-delta.up { color: var(--profit); } .ticker-delta.down { color: var(--cost); }
+
+  .section { margin-bottom: 40px; }
+  .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--ink-faint); }
+  .section-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+  .section-title em { font-style: italic; font-weight: 400; color: var(--ink-muted); }
+  .section-subtitle { color: var(--ink-muted); font-size: 11px; margin-top: 2px; }
+  .period-pills { display: flex; gap: 2px; }
+  .period-pill { padding: 5px 14px; font-size: 11px; font-family: 'IBM Plex Mono', monospace; border: 1px solid var(--ink-faint); background: none; cursor: pointer; color: var(--ink-muted); transition: all .2s; }
+  .period-pill:first-child{border-radius:2px 0 0 2px} .period-pill:last-child{border-radius:0 2px 2px 0}
+  .period-pill.active { background: var(--ink); color: var(--canvas); border-color: var(--ink); }
+
+  .panel { background: var(--white); border: 1px solid var(--ink-faint); border-radius: 2px; padding: 32px; position: relative; }
+  .panel svg { width: 100%; height: auto; display: block; overflow: visible; }
+
+  /* Legend — v2: added pattern indicators for colorblind */
+  .sankey-legend { display: flex; gap: 28px; margin-bottom: 20px; padding: 12px 16px; border: 1px solid var(--ink-ghost); border-radius: 2px; background: var(--canvas-warm); }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--ink-muted); }
+  .legend-swatch { width: 20px; height: 6px; border-radius: 1px; position: relative; }
+  .legend-swatch--rev { background: var(--revenue); }
+  .legend-swatch--profit { background: var(--profit); }
+  .legend-swatch--profit::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 3px, rgba(255,255,255,.45) 3px 5px); border-radius: 1px; }
+  .legend-swatch--cost { background: var(--cost); }
+  .legend-swatch--cost::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent 0 2px, rgba(255,255,255,.5) 2px 3px); border-radius: 1px; }
+
+  /* Bar chart (unchanged from v1) */
+  .grid-line-light{stroke:var(--ink-faint);stroke-width:.5;stroke-dasharray:2 6}
+  .axis-label-ed{fill:var(--ink-muted);font-size:10px;font-family:'IBM Plex Mono',monospace}
+  .month-label-ed{fill:var(--ink-light);font-size:11px;font-family:'IBM Plex Mono',monospace;font-weight:500}
+  .bar-rev{fill:var(--revenue);rx:1} .bar-exp{fill:var(--cost);opacity:.35;rx:1}
+  .bar-animated{animation:barSlide .6s cubic-bezier(.22,1,.36,1) both;transform-origin:bottom}
+  @keyframes barSlide{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+  .trend-line{fill:none;stroke:var(--revenue);stroke-width:2;stroke-linecap:round;stroke-dasharray:1000;stroke-dashoffset:1000;animation:strokeDraw 2.5s ease-out .5s forwards}
+  .trend-area{fill:var(--revenue);opacity:0;animation:fadeIn 1.2s ease-out .8s forwards}
+  @keyframes strokeDraw{to{stroke-dashoffset:0}} @keyframes fadeIn{to{opacity:.06}}
+  .trend-dot{fill:white;stroke:var(--revenue);stroke-width:2;opacity:0;animation:popIn .3s ease-out forwards;cursor:crosshair;transition:r .15s ease} .trend-dot:hover{r:7}
+  @keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+  .annotation-line{stroke:var(--profit);stroke-width:1;stroke-dasharray:4 3;opacity:0;animation:fadeIn .5s 2s forwards}
+  .annotation-text{fill:var(--profit);font-size:10px;font-family:'IBM Plex Mono',monospace;opacity:0;animation:fadeIn .5s 2.1s forwards}
+  .ed-tooltip{position:absolute;background:var(--ink);color:var(--canvas);border-radius:2px;padding:12px 16px;font-size:12px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:10;line-height:1.6;min-width:150px}
+  .ed-tooltip.visible{opacity:1}
+  .ed-tooltip::after{content:'';position:absolute;bottom:-5px;left:20px;width:10px;height:10px;background:var(--ink);transform:rotate(45deg)}
+  .tt-head{font-weight:500;margin-bottom:4px} .tt-row{display:flex;justify-content:space-between;gap:16px} .tt-label{color:var(--ink-faint)}
+
+  /* ===== SANKEY v2 ===== */
+  .sankey-node { cursor: pointer; outline: none; }
+  .sankey-node-rect { rx: 2; stroke: var(--ink-ghost); stroke-width: 1; transition: all 0.25s; }
+  .sankey-node:hover .sankey-node-rect,
+  .sankey-node:focus .sankey-node-rect { stroke: var(--ink-muted); stroke-width: 2; }
+  .sankey-node:focus { outline: none; }
+  .sankey-node:focus .sankey-node-rect { stroke: var(--revenue); stroke-width: 2.5; }
+  .sankey-node-hit { fill: transparent; cursor: pointer; } /* CR 1.2: wider hit target */
+  .sankey-node-label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; font-weight: 500; fill: var(--ink-light); pointer-events: none; }
+  .sankey-node-value { font-family: 'Fraunces', serif; font-size: 12px; fill: var(--ink-muted); pointer-events: none; }
+  .sankey-node-pct { font-family: 'IBM Plex Mono', monospace; font-size: 9px; fill: var(--ink-faint); pointer-events: none; } /* CR 3.3 */
+
+  /* CR 2.1/2.2/2.3: improved opacity levels */
+  .sankey-link-path { pointer-events: all; transition: fill-opacity 0.3s, stroke-opacity 0.3s; cursor: pointer; }
+  .sankey-link-path.dimmed { fill-opacity: 0.03 !important; stroke-opacity: 0.04 !important; }
+  .sankey-link-path.highlighted { fill-opacity: 0.3 !important; stroke-opacity: 0.45 !important; stroke-width: 1.5 !important; }
+
+  /* CR 3.2: column labels — better contrast & size */
+  .sankey-col-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; fill: var(--ink-light); }
+
+  .sankey-flow-dot { pointer-events: none; }
+
+  /* CR 7.1: annotation style */
+  .sankey-annotation-line { stroke: var(--ink-faint); stroke-width: 0.5; stroke-dasharray: 3 3; }
+  .sankey-annotation-text { font-family: 'IBM Plex Mono', monospace; font-size: 9.5px; }
+  .sankey-col-total { font-family: 'IBM Plex Mono', monospace; font-size: 9px; fill: var(--ink-faint); letter-spacing: 0.5px; }
+
+  /* CR 8.2: tooltip with caret */
+  .sankey-tooltip {
+    position: absolute; background: var(--ink); color: var(--canvas);
+    border-radius: 2px; padding: 14px 18px; pointer-events: none;
+    opacity: 0; transition: opacity 0.15s; z-index: 20; min-width: 210px;
+    font-size: 12px; line-height: 1.6; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+  .sankey-tooltip.visible { opacity: 1; }
+  .sankey-tooltip::after {
+    content: ''; position: absolute; top: 16px; left: -5px;
+    width: 10px; height: 10px; background: var(--ink); transform: rotate(45deg);
+  }
+  .sankey-tooltip.flip-x::after { left: auto; right: -5px; }
+  .sankey-tooltip.flip-y::after { top: auto; bottom: 16px; }
+  .stt-title { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 8px; }
+  .stt-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  .stt-row { display: flex; justify-content: space-between; padding: 2px 0; }
+  .stt-label { color: var(--ink-faint); }
+  .stt-val { font-weight: 500; }
+  .stt-divider { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 2px; }
+
+  /* CR 6.2: entry animation for Sankey */
+  .sankey-node, .sankey-link-path, .sankey-annotation-line, .sankey-annotation-text, .sankey-col-total {
+    opacity: 0; animation: sankeyFadeIn 0.5s ease-out forwards;
+  }
+  .sankey-col-label { opacity: 0; animation: sankeyFadeIn 0.4s ease-out forwards; }
+  @keyframes sankeyFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* CR 6.1: respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .sankey-flow-dot { display: none !important; }
+    .sankey-node, .sankey-link-path, .sankey-col-label, .sankey-annotation-line, .sankey-annotation-text, .sankey-col-total {
+      animation: none !important; opacity: 1 !important;
+    }
+    .bar-animated, .trend-line, .trend-area, .trend-dot { animation: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+  }
+
+  /* CR 4.1: mobile responsiveness — horizontal scroll with hint */
+  .sankey-scroll-wrap { position: relative; }
+  .sankey-scroll-hint {
+    display: none; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: var(--ink); color: var(--canvas); font-size: 9px; padding: 6px 10px;
+    border-radius: 2px; letter-spacing: 1px; text-transform: uppercase; z-index: 5;
+    opacity: 0.7; pointer-events: none; animation: hintPulse 2s ease-in-out 1s 3;
+  }
+  @keyframes hintPulse { 0%,100%{opacity:.7;transform:translateY(-50%) translateX(0)} 50%{opacity:1;transform:translateY(-50%) translateX(-4px)} }
+
+  /* Bottom grid */
+  .bottom-grid { display: grid; grid-template-columns: 3fr 2fr; gap: 24px; animation: slideIn .7s ease-out .3s both; }
+  .panel-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 600; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--ink-faint); }
+  .stack-row { margin-bottom: 16px; }
+  .stack-header { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
+  .stack-name{color:var(--ink-light)} .stack-val{font-weight:500}
+  .stack-track { height: 24px; background: var(--canvas-warm); border-radius: 2px; display: flex; overflow: hidden; gap: 2px; }
+  .stack-seg { height: 100%; border-radius: 1px; animation: stackGrow .8s cubic-bezier(.22,1,.36,1) both; position: relative; }
+  .stack-seg::after { content: attr(data-pct); position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 500; color: white; opacity: .9; }
+  @keyframes stackGrow{from{flex-basis:0%}}
+
+  .metric-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .metric-tile { padding: 16px; border-radius: 2px; text-align: center; }
+  .metric-tile-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--ink-muted); margin-bottom: 8px; }
+  .metric-tile-value { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 600; }
+  .metric-tile-sub { font-size: 10px; color: var(--ink-muted); margin-top: 4px; }
+
+  .footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--ink-faint); display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-faint); letter-spacing: .5px; animation: slideIn .7s ease-out .4s both; }
+  @keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+  @media(max-width:768px){
+    .header{grid-template-columns:1fr}.header-meta{text-align:left}
+    .ticker-strip{flex-wrap:wrap}.ticker-item{flex:1 1 45%}
+    .bottom-grid{grid-template-columns:1fr}
+    .sankey-legend{flex-wrap:wrap;gap:12px}
+    /* CR 4.1: horizontal scroll for Sankey on narrow screens */
+    .sankey-scroll-wrap .panel { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .sankey-scroll-wrap .panel svg#sankeySvg { min-width: 750px; }
+    .sankey-scroll-hint { display: block; }
+  }
+</style>
+</head>
+<body>
+<div class="dashboard">
+  <header class="header">
+    <div>
+      <div class="header-tag">Financial Report</div>
+      <h1>Revenue <span>Flow</span></h1>
+    </div>
+    <div class="header-meta"><strong>Period:</strong> Jan — Dec 2025<br><strong>Generated:</strong> Feb 12, 2026<br><strong>Currency:</strong> USD</div>
+  </header>
+
+  <div class="ticker-strip">
+    <div class="ticker-item" data-idx="01"><div class="ticker-label">Total Revenue</div><div class="ticker-value" style="color:var(--revenue)">2,840<span class="ticker-unit">k</span></div><div class="ticker-delta up">↑ 23.4% YoY</div></div>
+    <div class="ticker-item" data-idx="02"><div class="ticker-label">Gross Profit</div><div class="ticker-value" style="color:var(--profit)">1,760<span class="ticker-unit">k</span></div><div class="ticker-delta up">↑ 18.7%</div></div>
+    <div class="ticker-item" data-idx="03"><div class="ticker-label">Net Profit</div><div class="ticker-value" style="color:var(--profit)">640<span class="ticker-unit">k</span></div><div class="ticker-delta up">↑ 12.1%</div></div>
+    <div class="ticker-item" data-idx="04"><div class="ticker-label">Net Margin</div><div class="ticker-value" style="color:var(--profit)">22.5<span class="ticker-unit">%</span></div><div class="ticker-delta up">↑ 3.1pp</div></div>
+    <div class="ticker-item" data-idx="05"><div class="ticker-label">Total Costs</div><div class="ticker-value" style="color:var(--cost)">2,200<span class="ticker-unit">k</span></div><div class="ticker-delta down">↓ 4.2%</div></div>
+  </div>
+
+  <!-- Bar/Line Chart -->
+  <div class="section" style="animation:slideIn .7s ease-out .2s both">
+    <div class="section-header">
+      <div class="section-title">Monthly Performance <em>— revenue vs costs</em></div>
+      <div class="period-pills"><button class="period-pill active">FY</button><button class="period-pill">H2</button><button class="period-pill">Q4</button></div>
+    </div>
+    <div class="panel" style="position:relative">
+      <div id="mainChart"></div>
+      <div class="ed-tooltip" id="edTooltip"></div>
+    </div>
+  </div>
+
+  <!-- ============ SANKEY v2 ============ -->
+  <div class="section" style="animation:slideIn .7s ease-out .3s both">
+    <div class="section-header">
+      <div>
+        <div class="section-title">Income Statement Flow <em>— P&L waterfall</em></div>
+        <div class="section-subtitle">Hover or tap nodes & flows to trace the full income statement</div>
+      </div>
+    </div>
+    <div class="sankey-legend">
+      <div class="legend-item"><div class="legend-swatch legend-swatch--rev"></div>Revenue</div>
+      <div class="legend-item"><div class="legend-swatch legend-swatch--profit"></div>Profit</div>
+      <div class="legend-item"><div class="legend-swatch legend-swatch--cost"></div>Costs & Expenses</div>
+    </div>
+    <div class="sankey-scroll-wrap">
+      <div class="panel" id="sankeyWrap">
+        <!-- CR 5.1: accessible SVG -->
+        <svg id="sankeySvg" role="img" aria-label="Income statement Sankey diagram showing revenue flow from sources through gross profit to net profit">
+          <title>Income Statement Flow — P&amp;L Waterfall</title>
+          <desc>Sankey diagram breaking down $2.84M total revenue across SaaS Subscriptions ($1.4M), Enterprise Deals ($940k), Consulting ($360k), and Licensing ($120k) through cost of revenue and operating expenses to $640k net profit at 22.5% net margin.</desc>
+        </svg>
+        <div class="sankey-tooltip" id="sankeyTooltip"></div>
+      </div>
+      <div class="sankey-scroll-hint">scroll →</div>
+    </div>
+  </div>
+
+  <div class="bottom-grid">
+    <div class="panel">
+      <div class="panel-title">Revenue by Quarter</div>
+      <div class="stack-row"><div class="stack-header"><span class="stack-name">Q1 · Jan–Mar</span><span class="stack-val" style="color:var(--revenue)">$585k</span></div><div class="stack-track"><div class="stack-seg" data-pct="52%" style="flex-basis:52%;background:var(--revenue);animation-delay:.8s"></div><div class="stack-seg" data-pct="30%" style="flex-basis:30%;background:var(--revenue);opacity:.65;animation-delay:.9s"></div><div class="stack-seg" data-pct="18%" style="flex-basis:18%;background:var(--revenue);opacity:.4;animation-delay:1s"></div></div></div>
+      <div class="stack-row"><div class="stack-header"><span class="stack-name">Q2 · Apr–Jun</span><span class="stack-val" style="color:var(--revenue)">$725k</span></div><div class="stack-track"><div class="stack-seg" data-pct="48%" style="flex-basis:48%;background:var(--revenue);animation-delay:1.1s"></div><div class="stack-seg" data-pct="35%" style="flex-basis:35%;background:var(--revenue);opacity:.65;animation-delay:1.2s"></div><div class="stack-seg" data-pct="17%" style="flex-basis:17%;background:var(--revenue);opacity:.4;animation-delay:1.3s"></div></div></div>
+      <div class="stack-row"><div class="stack-header"><span class="stack-name">Q3 · Jul–Sep</span><span class="stack-val" style="color:var(--revenue)">$885k</span></div><div class="stack-track"><div class="stack-seg" data-pct="55%" style="flex-basis:55%;background:var(--revenue);animation-delay:1.4s"></div><div class="stack-seg" data-pct="28%" style="flex-basis:28%;background:var(--revenue);opacity:.65;animation-delay:1.5s"></div><div class="stack-seg" data-pct="17%" style="flex-basis:17%;background:var(--revenue);opacity:.4;animation-delay:1.6s"></div></div></div>
+      <div class="stack-row"><div class="stack-header"><span class="stack-name">Q4 · Oct–Dec</span><span class="stack-val" style="color:var(--revenue)">$1,045k</span></div><div class="stack-track"><div class="stack-seg" data-pct="50%" style="flex-basis:50%;background:var(--revenue);animation-delay:1.7s"></div><div class="stack-seg" data-pct="33%" style="flex-basis:33%;background:var(--revenue);opacity:.65;animation-delay:1.8s"></div><div class="stack-seg" data-pct="17%" style="flex-basis:17%;background:var(--revenue);opacity:.4;animation-delay:1.9s"></div></div></div>
+      <div style="display:flex;gap:16px;margin-top:16px;font-size:11px;color:var(--ink-muted)">
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--revenue);border-radius:1px;margin-right:4px;vertical-align:middle"></span>SaaS</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--revenue);opacity:.65;border-radius:1px;margin-right:4px;vertical-align:middle"></span>Enterprise</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--revenue);opacity:.4;border-radius:1px;margin-right:4px;vertical-align:middle"></span>Services</span>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">Key Metrics</div>
+      <div class="metric-tiles">
+        <div class="metric-tile" style="background:var(--revenue-light)"><div class="metric-tile-label">ARR</div><div class="metric-tile-value" style="color:var(--revenue)">$3.4M</div><div class="metric-tile-sub">↑ from $2.7M</div></div>
+        <div class="metric-tile" style="background:var(--profit-light)"><div class="metric-tile-label">Gross Margin</div><div class="metric-tile-value" style="color:var(--profit)">62.0%</div><div class="metric-tile-sub">↑ 4.2pp YoY</div></div>
+        <div class="metric-tile" style="background:var(--cost-light)"><div class="metric-tile-label">CAC</div><div class="metric-tile-value" style="color:var(--cost)">$284</div><div class="metric-tile-sub">↓ 18% QoQ</div></div>
+        <div class="metric-tile" style="background:var(--profit-light)"><div class="metric-tile-label">LTV:CAC</div><div class="metric-tile-value" style="color:var(--profit)">14.8x</div><div class="metric-tile-sub">Target: >10x</div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer"><span>Prism Analytics · Confidential</span><span>Page 1 of 1</span></footer>
+</div>
+
+<script>
+// ===== BAR / LINE CHART (unchanged) =====
+const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const rev=[180,195,210,240,225,260,285,310,290,330,345,370],exp=[140,135,150,160,155,170,175,190,185,195,200,210];
+const W=1100,H=300,pL=48,pR=16,pT=16,pB=36,cw_=W-pL-pR,ch_=H-pT-pB,mx_=Math.max(...rev)+40;
+const gx=i=>pL+(i/(months.length-1))*cw_,gy=v=>pT+ch_-(v/mx_)*ch_,gbx=i=>pL+(i/months.length)*cw_+(cw_/months.length)*.12,gbw=()=>(cw_/months.length)*.28;
+let cs=`<svg viewBox="0 0 ${W} ${H}">`;
+for(let i=0;i<=4;i++){const v=Math.round(mx_/4*i),y=gy(v);cs+=`<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" class="grid-line-light"/><text x="${pL-8}" y="${y+3}" class="axis-label-ed" text-anchor="end">$${v}k</text>`}
+exp.forEach((v,i)=>{const b=gbx(i);cs+=`<rect x="${b}" y="${gy(v)}" width="${gbw()}" height="${(v/mx_)*ch_}" class="bar-exp bar-animated" style="transform-origin:${b}px ${gy(0)}px;animation-delay:${.3+i*.04}s"/>`});
+rev.forEach((v,i)=>{const b=gbx(i)+gbw()+4;cs+=`<rect x="${b}" y="${gy(v)}" width="${gbw()}" height="${(v/mx_)*ch_}" class="bar-rev bar-animated" style="transform-origin:${b}px ${gy(0)}px;animation-delay:${.35+i*.04}s"/>`});
+let aD=`M${gx(0)},${gy(rev[0])}`,lD=`M${gx(0)},${gy(rev[0])}`;
+for(let i=1;i<rev.length;i++){const c1=gx(i-1)+(gx(i)-gx(i-1))*.5,c2=gx(i)-(gx(i)-gx(i-1))*.5;aD+=` C${c1},${gy(rev[i-1])} ${c2},${gy(rev[i])} ${gx(i)},${gy(rev[i])}`;lD+=` C${c1},${gy(rev[i-1])} ${c2},${gy(rev[i])} ${gx(i)},${gy(rev[i])}`}
+aD+=` L${gx(11)},${gy(0)} L${gx(0)},${gy(0)} Z`;cs+=`<path d="${aD}" class="trend-area"/><path d="${lD}" class="trend-line"/>`;
+rev.forEach((v,i)=>{cs+=`<circle cx="${gx(i)}" cy="${gy(v)}" r="4.5" class="trend-dot" data-i="${i}" style="animation-delay:${1.4+i*.08}s"/><text x="${gbx(i)+gbw()}" y="${H-10}" class="month-label-ed" text-anchor="middle">${months[i]}</text>`});
+const pk=rev.indexOf(Math.max(...rev));cs+=`<line x1="${gx(pk)}" y1="${gy(rev[pk])-14}" x2="${gx(pk)}" y2="${gy(rev[pk])-44}" class="annotation-line"/><text x="${gx(pk)+6}" y="${gy(rev[pk])-48}" class="annotation-text">PEAK $${rev[pk]}k ↑</text>`;
+cs+=`<rect x="${pL}" y="${H-6}" width="10" height="3" fill="var(--cost)" opacity=".4" rx="1"/><text x="${pL+14}" y="${H-3}" class="axis-label-ed">Expenses</text><rect x="${pL+80}" y="${H-6}" width="10" height="3" fill="var(--revenue)" rx="1"/><text x="${pL+94}" y="${H-3}" class="axis-label-ed">Revenue</text>`;
+cs+=`</svg>`;document.getElementById('mainChart').innerHTML=cs;
+const edt=document.getElementById('edTooltip'),fr=document.querySelector('.panel');
+document.querySelectorAll('.trend-dot').forEach(d=>{d.addEventListener('mouseenter',e=>{const i=+d.dataset.i,m=rev[i]-exp[i];edt.innerHTML=`<div class="tt-head">${months[i]} 2025</div><div class="tt-row"><span class="tt-label">Rev</span><span>$${rev[i]}k</span></div><div class="tt-row"><span class="tt-label">Exp</span><span>$${exp[i]}k</span></div><div class="tt-row"><span class="tt-label">Profit</span><span style="color:var(--profit)">$${m}k</span></div>`;edt.classList.add('visible');const r=fr.getBoundingClientRect();edt.style.left=(e.clientX-r.left-20)+'px';edt.style.top=(e.clientY-r.top-90)+'px'});d.addEventListener('mouseleave',()=>edt.classList.remove('visible'))});
+
+// ===== SANKEY v2 — Income Statement =====
+(function(){
+const svg=document.getElementById('sankeySvg'),tip=document.getElementById('sankeyTooltip'),wrap=document.getElementById('sankeyWrap');
+const TOTAL_REV=2840;
+const typeColor={rev:'var(--revenue)',profit:'var(--profit)',cost:'var(--cost)'};
+const typeLabel={rev:'Revenue',profit:'Profit',cost:'Cost'};
+
+// CR 7.2: profit-path links get higher base opacity
+const profitPath=new Set(['revenue→gross_profit','gross_profit→op_income','op_income→net_profit']);
+
+const nodes=[
+  {id:'saas',label:'SaaS Subscriptions',col:0,type:'rev',val:1420},
+  {id:'enterprise',label:'Enterprise Deals',col:0,type:'rev',val:940},
+  {id:'consulting',label:'Consulting',col:0,type:'rev',val:360},
+  {id:'licensing',label:'Licensing',col:0,type:'rev',val:120},
+  {id:'revenue',label:'Revenue',col:1,type:'rev',val:2840},
+  {id:'gross_profit',label:'Gross Profit',col:2,type:'profit',val:1760},
+  {id:'cogs',label:'Cost of Revenue',col:2,type:'cost',val:1080},
+  {id:'op_income',label:'Operating Income',col:3,type:'profit',val:842},
+  {id:'opex',label:'Operating Expenses',col:3,type:'cost',val:918},
+  {id:'infra',label:'Infrastructure',col:3,type:'cost',val:580},
+  {id:'service_del',label:'Service Delivery',col:3,type:'cost',val:500},
+  {id:'net_profit',label:'Net Profit',col:4,type:'profit',val:640},
+  {id:'tax',label:'Tax',col:4,type:'cost',val:202},
+  {id:'sm',label:'Sales & Marketing',col:4,type:'cost',val:480},
+  {id:'rd',label:'R&D',col:4,type:'cost',val:280},
+  {id:'ga',label:'G&A',col:4,type:'cost',val:158},
+];
+
+const links=[
+  {s:'saas',t:'revenue',v:1420},{s:'enterprise',t:'revenue',v:940},{s:'consulting',t:'revenue',v:360},{s:'licensing',t:'revenue',v:120},
+  {s:'revenue',t:'gross_profit',v:1760},{s:'revenue',t:'cogs',v:1080},
+  {s:'gross_profit',t:'op_income',v:842},{s:'gross_profit',t:'opex',v:918},
+  {s:'cogs',t:'infra',v:580},{s:'cogs',t:'service_del',v:500},
+  {s:'op_income',t:'net_profit',v:640},{s:'op_income',t:'tax',v:202},
+  {s:'opex',t:'sm',v:480},{s:'opex',t:'rd',v:280},{s:'opex',t:'ga',v:158},
+];
+
+const nm={};nodes.forEach(n=>{n.color=typeColor[n.type];nm[n.id]=n});
+
+// CR 3.1: increased left padding to fit source labels
+const svgW=1100, svgH=580, pad={l:155,r:20,t:52,b:28};
+const colPositions=[0, 0.22, 0.44, 0.66, 0.88];
+const nW=14;
+const colLabels=['SOURCES','REVENUE','GROSS SPLIT','OPERATING','NET / DETAIL'];
+svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+
+const cols=[[],[],[],[],[]];nodes.forEach(n=>cols[n.col].push(n));
+
+cols.forEach((col,ci)=>{
+  const totalVal=col.reduce((a,n)=>a+n.val,0);
+  const nodeGap=22;
+  const availH=svgH-pad.t-pad.b-(col.length-1)*nodeGap;
+  let y=pad.t;
+  col.forEach(n=>{
+    n.h=Math.max(20,(n.val/totalVal)*availH);
+    n.x=pad.l+colPositions[ci]*(svgW-pad.l-pad.r-nW);
+    n.y=y; n.w=nW;
+    y+=n.h+nodeGap;
+  });
+  const totalUsed=y-nodeGap-pad.t;
+  const offset=(svgH-pad.t-pad.b-totalUsed)/2;
+  if(offset>0)col.forEach(n=>n.y+=offset);
+});
+
+links.forEach(l=>{
+  const sn=nm[l.s],tn=nm[l.t];
+  if(!sn._o)sn._o=0;if(!tn._i)tn._i=0;
+  const sT=links.filter(x=>x.s===l.s).reduce((a,b)=>a+b.v,0);
+  const tT=links.filter(x=>x.t===l.t).reduce((a,b)=>a+b.v,0);
+  l.sy=sn.y+sn._o;l.sh=(l.v/sT)*sn.h;sn._o+=l.sh;
+  l.ty=tn.y+tn._i;l.th=(l.v/tT)*tn.h;tn._i+=l.th;
+});
+
+let out='';
+
+// Column labels — CR 3.2: improved contrast
+colPositions.forEach((cp,i)=>{
+  const delay=0.15+i*0.1;
+  out+=`<text x="${pad.l+cp*(svgW-pad.l-pad.r-nW)+nW/2}" y="28" class="sankey-col-label" text-anchor="middle" style="animation-delay:${delay}s">${colLabels[i]}</text>`;
+});
+out+=`<line x1="${pad.l}" y1="38" x2="${svgW-pad.r}" y2="38" stroke="var(--ink-ghost)" stroke-width="0.5"/>`;
+
+// Links — rendered FIRST so nodes draw on top (CR 1.1)
+links.forEach((l,i)=>{
+  const sn=nm[l.s],tn=nm[l.t],sx=sn.x+sn.w,tx=tn.x,mx=(sx+tx)/2;
+  const d=`M${sx},${l.sy} C${mx},${l.sy} ${mx},${l.ty} ${tx},${l.ty} L${tx},${l.ty+l.th} C${mx},${l.ty+l.th} ${mx},${l.sy+l.sh} ${sx},${l.sy+l.sh} Z`;
+  // CR 2.1 + 7.2: higher default opacity, profit path gets extra emphasis
+  const isProfitPath=profitPath.has(`${l.s}→${l.t}`);
+  const fillOp=isProfitPath?0.35:0.25;
+  const strokeOp=isProfitPath?0.55:0.4;
+  const colDelay=Math.max(nm[l.s].col, nm[l.t].col)*0.15+0.3;
+  const srcColor=nm[l.s].color;
+  out+=`<path d="${d}" class="sankey-link-path" fill="${srcColor}" fill-opacity="${fillOp}" stroke="${srcColor}" stroke-opacity="${strokeOp}" stroke-width="0.5" data-s="${l.s}" data-t="${l.t}" data-v="${l.v}" style="animation-delay:${colDelay}s"/>`;
+});
+
+// Flow dots — CR 6.1: reduced count, capped at 2
+const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!prefersReducedMotion){
+  links.forEach((l,i)=>{
+    const sn=nm[l.s],tn=nm[l.t],sx=sn.x+sn.w,tx=tn.x,mx=(sx+tx)/2;
+    const sym=l.sy+l.sh/2,tym=l.ty+l.th/2;
+    out+=`<path id="pp${i}" d="M${sx},${sym} C${mx},${sym} ${mx},${tym} ${tx},${tym}" fill="none" stroke="none"/>`;
+    const cnt=Math.min(2,Math.max(1,Math.round(l.v/1000)));
+    for(let p=0;p<cnt;p++){
+      out+=`<rect width="2.5" height="2.5" rx="0.5" fill="${nm[l.t].color}" opacity="0.2" class="sankey-flow-dot"><animateMotion dur="${3+Math.random()*3}s" begin="${p*1.5+Math.random()*2}s" repeatCount="indefinite"><mpath href="#pp${i}"/></animateMotion></rect>`;
+    }
+  });
+}
+
+// Nodes — rendered LAST so they're on top (CR 1.1)
+nodes.forEach(n=>{
+  const colDelay=n.col*0.15+0.2;
+  // CR 5.2: tabindex + role for keyboard nav
+  out+=`<g class="sankey-node" data-id="${n.id}" tabindex="0" role="button" aria-label="${n.label}: $${n.val>=1000?(n.val/1000).toFixed(1)+'M':n.val+'k'}, ${(n.val/TOTAL_REV*100).toFixed(1)}% of revenue" style="animation-delay:${colDelay}s">`;
+  out+=`<rect class="sankey-node-rect" x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" fill="${n.color}"/>`;
+  // CR 1.2: invisible wider hit target
+  out+=`<rect class="sankey-node-hit" x="${n.x-20}" y="${n.y}" width="${n.w+40}" height="${n.h}"/>`;
+  const lx=n.col===0?n.x-10:n.x+n.w+10, anc=n.col===0?'end':'start', ly=n.y+n.h/2;
+  out+=`<text x="${lx}" y="${ly-7}" class="sankey-node-label" text-anchor="${anc}">${n.label}</text>`;
+  // CR 3.3: show percentage for cols 2-4
+  if(n.col>=2){
+    out+=`<text x="${lx}" y="${ly+7}" class="sankey-node-value" text-anchor="${anc}">$${n.val>=1000?(n.val/1000).toFixed(1)+'M':n.val+'k'}</text>`;
+    out+=`<text x="${lx}" y="${ly+19}" class="sankey-node-pct" text-anchor="${anc}">${(n.val/TOTAL_REV*100).toFixed(1)}%</text>`;
+  } else {
+    out+=`<text x="${lx}" y="${ly+8}" class="sankey-node-value" text-anchor="${anc}">$${n.val>=1000?(n.val/1000).toFixed(1)+'M':n.val+'k'}</text>`;
+  }
+  out+=`</g>`;
+});
+
+// CR 7.1: always-visible annotations for key ratios
+const gp=nm['gross_profit'], rv=nm['revenue'], oi=nm['op_income'], np=nm['net_profit'], cogs=nm['cogs'];
+const annDelay=5*0.15+0.4; // appear after all columns
+
+// Gross margin annotation
+const gmX=(rv.x+rv.w+gp.x)/2, gmY=Math.min(rv.y, gp.y)-4;
+out+=`<line x1="${gmX}" y1="${gmY+8}" x2="${gmX}" y2="${gmY+28}" class="sankey-annotation-line" style="animation-delay:${annDelay}s"/>`;
+out+=`<text x="${gmX}" y="${gmY+4}" class="sankey-annotation-text" text-anchor="middle" style="fill:var(--profit);animation-delay:${annDelay+0.1}s">62.0% gross margin</text>`;
+
+// Operating margin annotation
+const omX=(gp.x+gp.w+oi.x)/2, omY=Math.min(gp.y, oi.y)-4;
+out+=`<line x1="${omX}" y1="${omY+8}" x2="${omX}" y2="${omY+28}" class="sankey-annotation-line" style="animation-delay:${annDelay+0.15}s"/>`;
+out+=`<text x="${omX}" y="${omY+4}" class="sankey-annotation-text" text-anchor="middle" style="fill:var(--profit);animation-delay:${annDelay+0.25}s">29.6% operating margin</text>`;
+
+// COGS ratio annotation
+const crX=(rv.x+rv.w+cogs.x)/2, crY=cogs.y+cogs.h+20;
+out+=`<text x="${crX}" y="${crY}" class="sankey-annotation-text" text-anchor="middle" style="fill:var(--cost);animation-delay:${annDelay+0.3}s">38.0% COGS</text>`;
+
+// Net margin annotation (improved from v1)
+out+=`<g style="animation-delay:${annDelay+0.35}s" class="sankey-annotation-text"><line x1="${np.x+np.w+6}" y1="${np.y-6}" x2="${np.x+np.w+6}" y2="${np.y+np.h+6}" class="sankey-annotation-line"/><text x="${np.x+np.w+14}" y="${np.y+np.h+18}" style="fill:var(--profit);font-size:10px;font-family:'IBM Plex Mono',monospace">22.5% net margin</text></g>`;
+
+// CR 7.3: column subtotals
+cols.forEach((col,ci)=>{
+  const totalVal=col.reduce((a,n)=>a+n.val,0);
+  const bottomY=Math.max(...col.map(n=>n.y+n.h))+18;
+  const cx=pad.l+colPositions[ci]*(svgW-pad.l-pad.r-nW)+nW/2;
+  // Only show subtotals for cols that aggregate (skip col 0 sources, they equal revenue)
+  if(ci>=1){
+    const valStr=totalVal>=1000?'$'+(totalVal/1000).toFixed(1)+'M':'$'+totalVal+'k';
+    out+=`<text x="${cx}" y="${bottomY}" class="sankey-col-total" text-anchor="middle" style="animation-delay:${ci*0.15+0.5}s">${valStr}</text>`;
+  }
+});
+
+svg.innerHTML+=out;
+
+// ===== Interactivity (CR 1.1 fix: nodes on top; CR 4.2: touch; CR 5.2: keyboard) =====
+const allL=svg.querySelectorAll('.sankey-link-path'),allN=svg.querySelectorAll('.sankey-node');
+
+function getConnected(nodeId){
+  const ids=new Set([nodeId]);
+  function fwd(id){links.filter(l=>l.s===id).forEach(l=>{ids.add(l.t);fwd(l.t)})}
+  function bwd(id){links.filter(l=>l.t===id).forEach(l=>{ids.add(l.s);bwd(l.s)})}
+  fwd(nodeId);bwd(nodeId);return ids;
+}
+function hiNode(id){
+  const c=getConnected(id);
+  allL.forEach(l=>{const ok=c.has(l.dataset.s)&&c.has(l.dataset.t);l.classList.toggle('highlighted',ok);l.classList.toggle('dimmed',!ok)});
+}
+function hiLink(el){allL.forEach(l=>l.classList.add('dimmed'));el.classList.remove('dimmed');el.classList.add('highlighted')}
+function reset(){allL.forEach(l=>{l.classList.remove('highlighted','dimmed')})}
+
+// CR 8.1 + 8.2: tooltip with boundary detection and caret flip
+function showTip(html,x,y){
+  tip.innerHTML=html;
+  tip.classList.add('visible');
+  tip.classList.remove('flip-x','flip-y');
+  const r=wrap.getBoundingClientRect();
+  const tipW=tip.offsetWidth||240, tipH=tip.offsetHeight||120;
+  let left=x-r.left+16, top=y-r.top-20;
+  // Flip horizontally if overflows right
+  if(left+tipW>r.width-8){left=x-r.left-tipW-16;tip.classList.add('flip-x')}
+  // Flip vertically if overflows bottom
+  if(top+tipH>r.height-8){top=y-r.top-tipH+20;tip.classList.add('flip-y')}
+  // Clamp
+  left=Math.max(4,Math.min(left,r.width-tipW-4));
+  top=Math.max(4,Math.min(top,r.height-tipH-4));
+  tip.style.left=left+'px';
+  tip.style.top=top+'px';
+}
+function moveTip(x,y){
+  const r=wrap.getBoundingClientRect();
+  const tipW=tip.offsetWidth||240, tipH=tip.offsetHeight||120;
+  tip.classList.remove('flip-x','flip-y');
+  let left=x-r.left+16, top=y-r.top-20;
+  if(left+tipW>r.width-8){left=x-r.left-tipW-16;tip.classList.add('flip-x')}
+  if(top+tipH>r.height-8){top=y-r.top-tipH+20;tip.classList.add('flip-y')}
+  left=Math.max(4,Math.min(left,r.width-tipW-4));
+  top=Math.max(4,Math.min(top,r.height-tipH-4));
+  tip.style.left=left+'px';
+  tip.style.top=top+'px';
+}
+function hideTip(){reset();tip.classList.remove('visible','flip-x','flip-y')}
+
+function buildNodeTipHTML(id){
+  const n=nm[id];
+  const ins=links.filter(l=>l.t===id),outs=links.filter(l=>l.s===id);
+  let h=`<div class="stt-title"><div class="stt-dot" style="background:${n.color}"></div>${n.label}</div>`;
+  h+=`<div class="stt-row"><span class="stt-label">Amount</span><span class="stt-val">$${n.val>=1000?(n.val/1000).toFixed(1)+'M':n.val+'k'}</span></div>`;
+  h+=`<div class="stt-row"><span class="stt-label">Type</span><span class="stt-val" style="color:${n.color}">${typeLabel[n.type]}</span></div>`;
+  h+=`<div class="stt-row"><span class="stt-label">% of Revenue</span><span class="stt-val">${(n.val/TOTAL_REV*100).toFixed(1)}%</span></div>`;
+  if(ins.length){h+=`<div class="stt-divider">INFLOWS</div>`;ins.forEach(l=>h+=`<div class="stt-row"><span class="stt-label">${nm[l.s].label}</span><span class="stt-val">$${l.v>=1000?(l.v/1000).toFixed(1)+'M':l.v+'k'}</span></div>`)}
+  if(outs.length){h+=`<div class="stt-divider">OUTFLOWS</div>`;outs.forEach(l=>h+=`<div class="stt-row"><span class="stt-label">${nm[l.t].label}</span><span class="stt-val">$${l.v>=1000?(l.v/1000).toFixed(1)+'M':l.v+'k'}</span></div>`)}
+  return h;
+}
+
+function buildLinkTipHTML(lk){
+  const sn=nm[lk.dataset.s],tn=nm[lk.dataset.t],v=+lk.dataset.v;
+  return `<div class="stt-title"><div class="stt-dot" style="background:${tn.color}"></div>${sn.label} → ${tn.label}</div><div class="stt-row"><span class="stt-label">Amount</span><span class="stt-val">$${v>=1000?(v/1000).toFixed(1)+'M':v+'k'}</span></div><div class="stt-row"><span class="stt-label">Share</span><span class="stt-val">${(v/TOTAL_REV*100).toFixed(1)}%</span></div>`;
+}
+
+// CR 4.2: track touch vs mouse for interaction mode
+let isTouchActive=false;
+let activeNodeId=null;
+
+// Node — mouse events
+allN.forEach(nd=>{
+  nd.addEventListener('mouseenter',e=>{
+    if(isTouchActive)return;
+    const id=nd.dataset.id;hiNode(id);
+    showTip(buildNodeTipHTML(id),e.clientX,e.clientY);
+  });
+  nd.addEventListener('mousemove',e=>{if(!isTouchActive)moveTip(e.clientX,e.clientY)});
+  nd.addEventListener('mouseleave',()=>{if(!isTouchActive)hideTip()});
+
+  // CR 4.2: touch/click toggle
+  nd.addEventListener('click',e=>{
+    e.stopPropagation();
+    const id=nd.dataset.id;
+    if(activeNodeId===id){hideTip();activeNodeId=null;return}
+    activeNodeId=id;hiNode(id);
+    const rect=nd.querySelector('.sankey-node-rect');
+    const box=rect.getBoundingClientRect();
+    showTip(buildNodeTipHTML(id),box.right,box.top+box.height/2);
+  });
+
+  // CR 5.2: keyboard
+  nd.addEventListener('focus',()=>{
+    const id=nd.dataset.id;hiNode(id);
+    const rect=nd.querySelector('.sankey-node-rect');
+    const box=rect.getBoundingClientRect();
+    showTip(buildNodeTipHTML(id),box.right,box.top+box.height/2);
+  });
+  nd.addEventListener('blur',hideTip);
+});
+
+// Link — mouse events
+allL.forEach(lk=>{
+  lk.addEventListener('mouseenter',e=>{
+    if(isTouchActive)return;
+    hiLink(lk);
+    showTip(buildLinkTipHTML(lk),e.clientX,e.clientY);
+  });
+  lk.addEventListener('mousemove',e=>{if(!isTouchActive)moveTip(e.clientX,e.clientY)});
+  lk.addEventListener('mouseleave',()=>{if(!isTouchActive)hideTip()});
+
+  lk.addEventListener('click',e=>{
+    e.stopPropagation();
+    activeNodeId=null;
+    hiLink(lk);
+    showTip(buildLinkTipHTML(lk),e.clientX,e.clientY);
+  });
+});
+
+// Dismiss on outside tap
+document.addEventListener('click',()=>{hideTip();activeNodeId=null});
+// Track touch mode
+document.addEventListener('touchstart',()=>{isTouchActive=true},{passive:true});
+
+// Scroll hint: hide after user scrolls the Sankey panel
+const scrollPanel=wrap;
+if(scrollPanel){scrollPanel.addEventListener('scroll',function(){
+  const hint=document.querySelector('.sankey-scroll-hint');
+  if(hint)hint.style.display='none';
+},{once:true})}
+
+})();
+</script>
+</body>
+</html>

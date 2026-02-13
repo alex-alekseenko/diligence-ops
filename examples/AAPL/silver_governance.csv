@@ -1,0 +1,2 @@
+ceo_name,ceo_total_comp,ceo_comp_prior,ceo_pay_growth,median_employee_pay,ceo_pay_ratio,board_size,independent_directors,board_independence_pct,has_poison_pill,has_staggered_board,has_dual_class,anti_takeover_provisions,governance_flags,processed_at,source_bronze
+Tim Cook,74294811.0,74609802.0,-0.0042,139483.0,533.0,9,7,0.7778,False,False,False,[],[],2026-02-12T17:58:31.569017+00:00,bronze_def14a_proxy.csv

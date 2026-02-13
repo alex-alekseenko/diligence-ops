@@ -1,0 +1,5 @@
+holder_name,shares,value,pct_of_portfolio,change_shares,change_pct,holder_type,filing_date,ingested_at,source_url
+BERKSHIRE HATHAWAY INC,0,,12.0,,,institutional,2024-02-14,2026-02-12T17:57:40.503123+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=SC+13G
+VANGUARD GROUP INC,1317966471,,8.47,,,institutional,2024-02-13,2026-02-12T17:57:40.503123+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=SC+13G
+BlackRock Inc.,1043713019,,6.7,,,institutional,2024-02-12,2026-02-12T17:57:40.503123+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=SC+13G
+FMR LLC,0,,,,,institutional,2013-02-14,2026-02-12T17:57:40.503123+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=SC+13G

@@ -1,0 +1,5 @@
+holder_name,shares,value,pct_of_portfolio,change_shares,change_pct,holder_type,filing_date,processed_at,source_bronze
+VANGUARD GROUP INC,1317966471,,8.47,,,passive,2024-02-13,2026-02-12T17:57:50.555523+00:00,bronze_13f_holdings.csv
+BlackRock Inc.,1043713019,,6.7,,,passive,2024-02-12,2026-02-12T17:57:50.555523+00:00,bronze_13f_holdings.csv
+BERKSHIRE HATHAWAY INC,0,,12.0,,,active,2024-02-14,2026-02-12T17:57:50.555523+00:00,bronze_13f_holdings.csv
+FMR LLC,0,,,,,active,2013-02-14,2026-02-12T17:57:50.555523+00:00,bronze_13f_holdings.csv

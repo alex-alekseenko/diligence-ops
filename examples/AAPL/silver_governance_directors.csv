@@ -1,0 +1,9 @@
+name,is_independent,committees,role,age,director_since,processed_at,source_bronze
+Art Levinson,True,['People and Compensation Committee'],Chair of the Board,75,2000,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Tim Cook,False,[],Chief Executive Officer,65,2011,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Wanda Austin,True,['Audit and Finance Committee'],,71,2024,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Alex Gorsky,True,[],,65,2021,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Andrea Jung,True,"['Nominating Committee', 'People and Compensation Committee (Chair)']",Chair,67,2008,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Monica Lozano,True,['Audit and Finance Committee'],,69,2021,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Ron Sugar,True,['Audit and Finance Committee'],Chair,77,2010,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv
+Sue Wagner,True,"['Audit and Finance Committee', 'Nominating (Chair)']",,64,2014,2026-02-12T17:58:31.572022+00:00,bronze_def14a_proxy.csv

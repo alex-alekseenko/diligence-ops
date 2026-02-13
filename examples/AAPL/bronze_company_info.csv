@@ -1,0 +1,2 @@
+ticker,company_name,cik,sic,sic_description,fiscal_year_end,exchanges,entity_type,category,latest_10k_date,ingested_at,source_url
+AAPL,Apple Inc.,0000320193,3571,Electronic Computers,0926,Nasdaq,operating,Large accelerated filer,2025-10-31,2026-02-12T17:57:37.716013+00:00,https://data.sec.gov/submissions/

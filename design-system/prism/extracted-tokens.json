@@ -1,0 +1,69 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "color": {
+    "primary": { "$value": "#4a90d9", "$type": "color", "oklch": "oklch(0.623 0.140 255.0)", "$description": "Revenue blue — CTAs, links, active states, data-positive indicators" },
+    "primary-hover": { "$value": "#3a78b8", "$type": "color", "oklch": "oklch(0.545 0.130 255.0)", "$description": "Darker blue for hover states" },
+    "secondary": { "$value": "#f4f0e8", "$type": "color", "oklch": "oklch(0.957 0.014 85.0)", "$description": "Warm cream — secondary surfaces, subtle backgrounds" },
+    "background": { "$value": "#faf8f4", "$type": "color", "oklch": "oklch(0.980 0.008 80.0)", "$description": "Page canvas — warm parchment" },
+    "foreground": { "$value": "#1a1814", "$type": "color", "oklch": "oklch(0.172 0.012 75.0)", "$description": "Warm near-black — headings and primary text" },
+    "muted": { "$value": "#f4f0e8", "$type": "color", "oklch": "oklch(0.957 0.014 85.0)", "$description": "Warm cream for subtle backgrounds" },
+    "muted-foreground": { "$value": "#8a8278", "$type": "color", "oklch": "oklch(0.604 0.018 73.0)", "$description": "Warm medium gray — subdued text, labels" },
+    "accent": { "$value": "#edf3fb", "$type": "color", "oklch": "oklch(0.965 0.015 250.0)", "$description": "Light blue — hover/highlight background" },
+    "border": { "$value": "#c4bfb6", "$type": "color", "oklch": "oklch(0.806 0.013 76.0)", "$description": "Warm light gray border" },
+    "border-subdued": { "$value": "#e4e0d8", "$type": "color", "oklch": "oklch(0.906 0.010 78.0)", "$description": "Ghost border — dividers, panels" },
+    "destructive": { "$value": "#d95a5a", "$type": "color", "oklch": "oklch(0.590 0.170 25.0)", "$description": "Cost red — expenses, negative deltas, destructive actions" },
+    "success": { "$value": "#3aaa6d", "$type": "color", "oklch": "oklch(0.635 0.144 160.0)", "$description": "Profit green — positive deltas, success states" },
+    "warning": { "$value": "#c49a3c", "$type": "color", "oklch": "oklch(0.700 0.140 80.0)", "$description": "Ochre/amber — warning accents, tertiary data" },
+    "card": { "$value": "#ffffff", "$type": "color", "oklch": "oklch(1 0 0)", "$description": "Card surface — white panels on warm canvas" },
+    "ink-light": { "$value": "#3d3830", "$type": "color", "oklch": "oklch(0.310 0.018 72.0)", "$description": "Dark warm gray — secondary headings, axis labels" },
+    "ink-faint": { "$value": "#c4bfb6", "$type": "color", "oklch": "oklch(0.806 0.013 76.0)", "$description": "Light warm gray — borders, grid lines" },
+    "ink-ghost": { "$value": "#e4e0d8", "$type": "color", "oklch": "oklch(0.906 0.010 78.0)", "$description": "Very light warm gray — ghost borders, dividers" }
+  },
+  "typography": {
+    "fontFamily": {
+      "heading": { "$value": "'Fraunces', serif", "$type": "fontFamily" },
+      "body": { "$value": "'IBM Plex Mono', monospace", "$type": "fontFamily" },
+      "mono": { "$value": "'IBM Plex Mono', monospace", "$type": "fontFamily" }
+    },
+    "fontSize": {
+      "xs": { "$value": "9px" },
+      "sm": { "$value": "10px" },
+      "base": { "$value": "11px" },
+      "md": { "$value": "12px" },
+      "lg": { "$value": "16px" },
+      "xl": { "$value": "20px" },
+      "2xl": { "$value": "24px" },
+      "3xl": { "$value": "28px" },
+      "4xl": { "$value": "clamp(36px, 5.5vw, 60px)" }
+    },
+    "fontWeight": {
+      "normal": { "$value": "400" },
+      "medium": { "$value": "500" },
+      "semibold": { "$value": "600" },
+      "bold": { "$value": "700" }
+    }
+  },
+  "spacing": {
+    "1": { "$value": "4px" },
+    "2": { "$value": "8px" },
+    "3": { "$value": "12px" },
+    "4": { "$value": "16px" },
+    "5": { "$value": "20px" },
+    "6": { "$value": "24px" },
+    "8": { "$value": "32px" },
+    "10": { "$value": "40px" },
+    "14": { "$value": "56px" }
+  },
+  "borderRadius": {
+    "xs": { "$value": "1px" },
+    "sm": { "$value": "2px" },
+    "md": { "$value": "2px" },
+    "lg": { "$value": "2px" },
+    "full": { "$value": "9999px" }
+  },
+  "shadow": {
+    "sm": { "$value": "0 1px 3px oklch(0.172 0.012 75 / 6%)" },
+    "md": { "$value": "0 4px 12px oklch(0.172 0.012 75 / 8%)" },
+    "lg": { "$value": "0 8px 32px oklch(0 0 0 / 15%)" }
+  }
+}

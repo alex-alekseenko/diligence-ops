@@ -1,0 +1,47 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Environment
+.env
+
+# Node
+node_modules/
+.next/
+web/.next/
+
+# Pipeline output (generated at runtime)
+pipeline_output/
+
+# IDE
+.vscode/
+.idea/
+
+# Screenshots / images (design refs, debug captures)
+*.png
+*.jpg
+*.jpeg
+
+# Playwright MCP
+.playwright-mcp/
+
+# Temp files
+nul
+*tmp_result.json
+
+# Claude Code
+.claude/
+
+# App Builder
+app-builder/
+
+# OS
+.DS_Store
+Thumbs.db

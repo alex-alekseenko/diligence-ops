@@ -1,0 +1,118 @@
+insider_name,insider_title,transaction_date,transaction_code,shares,price_per_share,value,shares_owned_after,is_direct,filing_date,ingested_at,source_url
+Susan Wagner,Director,2026-02-01,M,1255.0,,,63746.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Susan Wagner,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Ronald D Sugar,Director,2026-02-01,M,1255.0,,,110566.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Ronald D Sugar,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Monica C Lozano,Director,2026-02-01,M,1255.0,,,9862.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Monica C Lozano,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Arthur D Levinson,Director,2026-02-01,M,1113.0,,,4070689.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Arthur D Levinson,Director,2026-02-01,M,1113.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Andrea Jung,Director,2026-02-01,M,1255.0,,,77260.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Andrea Jung,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Alex Gorsky,Director,2026-02-01,M,1255.0,,,6794.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Alex Gorsky,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Wanda M Austin,Director,2026-02-01,M,1255.0,,,2843.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Wanda M Austin,Director,2026-02-01,M,1255.0,,,0.0,True,2026-02-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-11-12,G,3750.0,0.0,,175408.0,True,2025-11-14,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-11-07,S,3752.0,271.23,1017654.9600000001,15098.0,True,2025-11-12,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-15,M,16457.0,,,21026.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-15,F,8062.0,249.34,2010179.08,12964.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-16,S,500.0,245.89,122945.0,12464.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-16,S,1665.0,247.04,411321.6,10799.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-16,S,1534.0,247.82,380155.88,9265.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-16,S,500.0,248.73,124365.0,8765.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-15,M,5530.0,,,0.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-15,M,5816.0,,,11633.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-10-15,M,5111.0,,,20442.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,M,7371.0,,,22469.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,F,3619.0,249.34,902361.46,18850.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,M,1914.0,,,0.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,M,2077.0,,,4155.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,M,1898.0,,,7593.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-10-15,M,1482.0,,,8890.0,True,2025-10-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-01,M,277206.0,,,3557501.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-01,F,147243.0,255.45,37613224.35,3410258.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-02,S,8395.0,254.83,2139297.85,3401863.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-02,S,22524.0,255.86,5762990.640000001,3379339.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-02,S,39293.0,256.62,10083369.66,3340046.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-02,S,59751.0,257.57,15390065.07,3280295.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-10-01,M,277206.0,,,0.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-10-01,M,92403.0,,,229090.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-10-01,F,49390.0,255.45,12616675.5,179700.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-10-02,S,41273.0,257.36,10622019.280000001,138427.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-10-02,S,1740.0,258.08,449059.19999999995,136687.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-10-01,M,92403.0,,,0.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Sabih Khan,COO,2025-10-01,M,92403.0,,,1092162.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Sabih Khan,COO,2025-10-01,F,49390.0,255.45,12616675.5,1042772.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Sabih Khan,COO,2025-10-01,M,92403.0,,,0.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-01,M,92403.0,,,271561.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-01,F,45278.0,255.45,11566265.1,226283.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-02,S,3500.0,254.83,891905.0,222783.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-02,S,8100.0,255.96,2073276.0,214683.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-02,S,13974.0,256.6,3585728.4000000004,200709.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-02,S,21551.0,257.54,5550244.54,179158.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-10-01,M,92403.0,,,0.0,True,2025-10-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Sabih Khan,COO,2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Sabih Khan,COO,2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-09-28,A,146795.0,0.0,,146795.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-09-28,A,48932.0,0.0,,48932.0,True,2025-09-30,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Arthur D Levinson,Director,2025-08-28,S,90000.0,232.07,20886300.0,4069576.0,True,2025-08-29,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-08-25,G,435.0,0.0,,15098.0,True,2025-08-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-08-08,S,34821.0,223.2,7772047.199999999,136687.0,True,2025-08-12,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-05-12,S,4486.0,208.1933,933955.1438,15533.0,True,2025-05-14,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-23,S,4570.0,206.0,941420.0,4569.0,True,2025-04-25,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-15,M,16458.0,,,16458.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-15,F,7319.0,202.14,1479462.66,9139.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-15,M,5530.0,,,5530.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-15,M,5817.0,,,17449.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Kevan Parekh,"Senior Vice President, CFO",2025-04-15,M,5111.0,,,25553.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,M,7373.0,,,22906.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,F,2887.0,202.14,583578.1799999999,20019.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,M,1914.0,,,1914.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,M,2078.0,,,6232.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,M,1899.0,,,9491.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Chris Kondo,Principal Accounting Officer,2025-04-15,M,1482.0,,,10372.0,True,2025-04-17,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-01,M,74535.0,,,464594.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-01,F,39042.0,223.19,8713783.98,425552.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-02,S,15721.0,223.48,3513329.0799999996,409831.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-02,S,17292.0,224.34,3879287.2800000003,392539.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-02,S,2480.0,225.03,558074.4,390059.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-01,M,29688.0,,,0.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-01,M,22688.0,,,22688.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Jeffrey E Williams,COO,2025-04-01,M,22159.0,,,44318.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-04-01,M,74535.0,,,211222.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-04-01,F,39714.0,223.19,8863767.66,171508.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-04-01,M,29688.0,,,0.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-04-01,M,22688.0,,,22688.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Deirdre O'Brien,Senior Vice President,2025-04-01,M,22159.0,,,44318.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-01,M,218568.0,,,3498863.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-01,F,110432.0,223.19,24647318.08,3388431.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-02,S,6695.0,221.77,1484750.1500000001,3381736.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-02,S,28774.0,222.99,6416314.260000001,3352962.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-02,S,62077.0,223.97,13903385.69,3290885.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-02,S,10590.0,224.76,2380208.4,3280295.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-01,M,111329.0,,,0.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-01,M,85080.0,,,85080.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Timothy D Cook,Chief Executive Officer,2025-04-01,M,22159.0,,,44318.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-01,M,74535.0,,,253693.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-01,F,35713.0,223.19,7970784.47,217980.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-02,S,1600.0,221.68,354688.0,216380.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-02,S,9231.0,222.87,2057312.97,207149.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-02,S,22343.0,223.9,5002597.7,184806.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-02,S,5648.0,224.62,1268653.76,179158.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-01,M,29688.0,,,0.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-01,M,22688.0,,,22688.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Katherine L. Adams,"SVP, GC and Secretary",2025-04-01,M,22159.0,,,44318.0,True,2025-04-03,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Susan Wagner,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Ronald D Sugar,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Monica C Lozano,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Arthur D Levinson,Director,2025-02-25,A,1113.0,0.0,,1113.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Andrea Jung,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Alex Gorsky,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4
+Wanda M Austin,Director,2025-02-25,A,1255.0,0.0,,1255.0,True,2025-02-27,2026-02-12T17:57:50.378985+00:00,https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=4

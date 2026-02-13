@@ -1,0 +1,158 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "Motion design tokens extracted from option-b-prism-v2.html (Prism Grid Revenue Dashboard). Companion to extracted-tokens.json (color/typography). Together they define a complete design system.",
+
+  "motion": {
+    "$description": "All motion-related design tokens",
+
+    "duration": {
+      "$description": "Duration scale mapped from Prism's animation values",
+      "$type": "duration",
+      "instant": { "$value": "50ms", "$description": "Imperceptible — state toggles" },
+      "faster": { "$value": "150ms", "$description": "Tooltip show/hide, link hover" },
+      "fast": { "$value": "250ms", "$description": "Sankey node/link hover transitions" },
+      "normal": { "$value": "300ms", "$description": "Pop-in dots, interaction feedback" },
+      "moderate": { "$value": "500ms", "$description": "Sankey fade-in entries" },
+      "slow": { "$value": "700ms", "$description": "Page section slideIn, stack bar grow" },
+      "slower": { "$value": "800ms", "$description": "Stack segment grow" },
+      "extra-slow": { "$value": "2500ms", "$description": "SVG stroke draw animation" }
+    },
+
+    "easing": {
+      "$description": "Named easing curves extracted from Prism's CSS",
+      "$type": "cubicBezier",
+      "out": { "$value": [0, 0, 0.58, 1], "$description": "CSS ease-out — tooltip fades, section entries" },
+      "in-out": { "$value": [0.42, 0, 0.58, 1], "$description": "CSS ease-in-out — scroll hint pulse" },
+      "spring": { "$value": [0.22, 1, 0.36, 1], "$description": "Prism's primary spring curve — bar slides, stack segment grows. Fast start, gentle land." },
+      "smooth": { "$value": [0.45, 0.05, 0.55, 0.95], "$description": "Gentle symmetric — smooth transitions" },
+      "linear": { "$value": [0, 0, 1, 1], "$description": "Linear — continuous flow dot motion" }
+    },
+
+    "distance": {
+      "$description": "Movement distances",
+      "$type": "dimension",
+      "xs": { "$value": "2px", "$description": "Focus ring offset" },
+      "sm": { "$value": "6px", "$description": "Sankey fade-in translateY" },
+      "md": { "$value": "14px", "$description": "Annotation line offset" },
+      "lg": { "$value": "20px", "$description": "Section slideIn translateY" },
+      "xl": { "$value": "44px", "$description": "Peak annotation line height" }
+    },
+
+    "scale": {
+      "$description": "Scale factors",
+      "$type": "number",
+      "collapse": { "$value": 0, "$description": "Bar scaleY start (grows from 0)" },
+      "press": { "$value": 0.97, "$description": "Button press state" },
+      "hover-dot": { "$value": 1.56, "$description": "Trend dot r:4.5→7 on hover" }
+    },
+
+    "transition": {
+      "$description": "Named composite transitions extracted from Prism's CSS",
+      "sankey-node-hover": { "$type": "transition", "$value": { "duration": "250ms", "delay": "0ms", "timingFunction": "ease" }, "$description": "Sankey node rect stroke width/color on hover" },
+      "sankey-link-hover": { "$type": "transition", "$value": { "duration": "300ms", "delay": "0ms", "timingFunction": "ease" }, "$description": "Sankey link path fill-opacity and stroke-opacity" },
+      "tooltip-fade": { "$type": "transition", "$value": { "duration": "150ms", "delay": "0ms", "timingFunction": "ease" }, "$description": "Tooltip opacity fade in/out" },
+      "trend-dot-hover": { "$type": "transition", "$value": { "duration": "150ms", "delay": "0ms", "timingFunction": "ease" }, "$description": "SVG trend dot radius grow on hover" },
+      "period-pill-hover": { "$type": "transition", "$value": { "duration": "200ms", "delay": "0ms", "timingFunction": "ease" }, "$description": "Period pill button bg/color toggle" }
+    },
+
+    "keyframes": {
+      "$description": "Keyframe animations extracted from Prism's CSS",
+      "extracted": [
+        {
+          "name": "slideIn",
+          "frames": { "from": { "opacity": 0, "transform": "translateY(20px)" }, "to": { "opacity": 1, "transform": "translateY(0)" } },
+          "duration": "700ms",
+          "easing": "ease-out",
+          "usedOn": "Dashboard sections, header, footer, bottom grid",
+          "purpose": "Staggered page entrance animation"
+        },
+        {
+          "name": "barSlide",
+          "frames": { "from": { "transform": "scaleY(0)", "opacity": 0 }, "to": { "transform": "scaleY(1)", "opacity": 1 } },
+          "duration": "600ms",
+          "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "usedOn": "Bar chart revenue and expense bars",
+          "purpose": "Bars grow upward from baseline"
+        },
+        {
+          "name": "strokeDraw",
+          "frames": { "to": { "stroke-dashoffset": 0 } },
+          "duration": "2500ms",
+          "easing": "ease-out",
+          "delay": "500ms",
+          "usedOn": "Revenue trend line SVG path",
+          "purpose": "Line draws itself across the chart"
+        },
+        {
+          "name": "fadeIn",
+          "frames": { "to": { "opacity": 1 } },
+          "duration": "1200ms",
+          "easing": "ease-out",
+          "delay": "800ms",
+          "usedOn": "Trend area fill, annotation lines/text",
+          "purpose": "Gentle opacity reveal after stroke draw completes"
+        },
+        {
+          "name": "popIn",
+          "frames": { "from": { "transform": "scale(0)", "opacity": 0 }, "to": { "transform": "scale(1)", "opacity": 1 } },
+          "duration": "300ms",
+          "easing": "ease-out",
+          "usedOn": "Trend line data points (dots)",
+          "purpose": "Dots pop in sequentially with staggered delays"
+        },
+        {
+          "name": "stackGrow",
+          "frames": { "from": { "flex-basis": "0%" } },
+          "duration": "800ms",
+          "easing": "cubic-bezier(0.22, 1, 0.36, 1)",
+          "usedOn": "Stacked bar chart segments (Revenue by Quarter)",
+          "purpose": "Segments grow from zero width"
+        },
+        {
+          "name": "sankeyFadeIn",
+          "frames": { "from": { "opacity": 0, "transform": "translateY(6px)" }, "to": { "opacity": 1, "transform": "translateY(0)" } },
+          "duration": "500ms",
+          "easing": "ease-out",
+          "usedOn": "Sankey nodes, links, labels, annotations",
+          "purpose": "Column-staggered entrance for Sankey diagram"
+        },
+        {
+          "name": "hintPulse",
+          "frames": {
+            "0%": { "opacity": 0.7, "transform": "translateY(-50%) translateX(0)" },
+            "50%": { "opacity": 1, "transform": "translateY(-50%) translateX(-4px)" },
+            "100%": { "opacity": 0.7, "transform": "translateY(-50%) translateX(0)" }
+          },
+          "duration": "2000ms",
+          "easing": "ease-in-out",
+          "iterationCount": 3,
+          "delay": "1000ms",
+          "usedOn": "Mobile scroll hint indicator",
+          "purpose": "Pulsing arrow hint for horizontal scroll"
+        }
+      ]
+    }
+  },
+
+  "meta": {
+    "source": "option-b-prism-v2.html",
+    "extractedAt": "2026-02-12T11:00:00Z",
+    "generator": "design-toolkit/extract-motion",
+    "libraries": [
+      { "name": "CSS Native", "version": "Custom @keyframes + CSS transitions" },
+      { "name": "SVG animateMotion", "version": "Flow dot particles along Sankey paths" }
+    ],
+    "stats": {
+      "keyframeCount": 7,
+      "transitionRuleCount": 5,
+      "hoverEffectsDetected": 4,
+      "scrollAnimationsDetected": 0,
+      "svgAnimationsDetected": 2
+    },
+    "crossReferences": {
+      "colorTokens": "extracted-globals.css",
+      "designSystem": "design-system.md",
+      "staticTokens": "extracted-tokens.json"
+    }
+  }
+}

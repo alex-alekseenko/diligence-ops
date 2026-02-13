@@ -1,0 +1,20 @@
+metric,value,source_tag,fiscal_year,period_end,currency,processed_at,source_bronze
+revenue,416161000000.0,RevenueFromContractWithCustomerExcludingAssessedTax,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+revenue_prior,391035000000.0,derived,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+revenue_yoy_change,0.0642551178283274,derived: YoY change,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+net_income,112010000000.0,NetIncomeLoss,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+net_income_prior,93736000000.0,derived,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+gross_profit,195201000000.0,GrossProfit,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+gross_margin,0.4690516410716045,derived: gross_profit / revenue,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+operating_income,133050000000.0,OperatingIncomeLoss,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+operating_margin,0.31970799762591884,derived: operating_income / revenue,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+total_assets,359241000000.0,Assets,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+total_liabilities,285508000000.0,Liabilities,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+stockholders_equity,73733000000.0,StockholdersEquity,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+debt_to_equity,3.872187487285205,derived: total_liabilities / stockholders_equity,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+long_term_debt,90678000000.0,LongTermDebt,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+cash_and_equivalents,35934000000.0,CashAndCashEquivalentsAtCarryingValue,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+current_ratio,0.8932929222186667,derived: assets_current / liabilities_current,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+operating_cash_flow,111482000000.0,NetCashProvidedByUsedInOperatingActivities,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+free_cash_flow,98767000000.0,derived: operating_cash_flow - capex,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv
+eps_basic,7.49,EarningsPerShareBasic,2025,2025-09-27,USD,2026-02-12T17:57:54.868964+00:00,bronze_xbrl_facts.csv

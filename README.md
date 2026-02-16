@@ -1,8 +1,18 @@
 # DiligenceOps
 
-AI-powered multi-workstream due diligence pipeline for M&A. Ingests SEC filings via EDGAR, runs them through a 16-agent LangGraph pipeline (bronze/silver/gold medallion architecture), and renders a structured diligence report in a Next.js dashboard.
+<table>
+<tr><td>
 
-> **Designed, architected, and shipped by [Alex Alekseenko](https://github.com/alex-alekseenko) using [Claude Code](https://docs.anthropic.com/en/docs/claude-code) as an AI engineering partner.** Every layer — idea research, PRD, system design, backend pipeline, frontend dashboard, data processing, and this demo video — is the result of my hands-on architecture decisions and technical direction, augmented by AI pair-programming. This is what one solution architect can deliver when armed with the right tools.
+### Designed, architected, and shipped by <a href="https://github.com/alex-alekseenko">Alex Alekseenko</a>
+
+Every layer of this project — **idea research, PRD, system design, backend pipeline, frontend dashboard, data processing, and demo video** — is the result of my hands-on architecture decisions and technical direction, powered by <a href="https://docs.anthropic.com/en/docs/claude-code">Claude Code</a> as an AI engineering partner.
+
+**This is what one solution architect can deliver when armed with the right tools.**
+
+</td></tr>
+</table>
+
+AI-powered multi-workstream due diligence pipeline for M&A. Ingests SEC filings via EDGAR, runs them through a 16-agent LangGraph pipeline (bronze/silver/gold medallion architecture), and renders a structured diligence report in a Next.js dashboard.
 
 ## Demo
 

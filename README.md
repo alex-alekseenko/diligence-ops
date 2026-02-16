@@ -16,7 +16,7 @@ AI-powered multi-workstream due diligence pipeline for M&A. Ingests SEC filings 
 
 ## Demo
 
-<video src="https://github.com/alex-alekseenko/diligence-ops/releases/download/v1.0/demo.mp4" controls width="100%"></video>
+https://github.com/user-attachments/assets/8c548d52-83ac-4456-bf1c-b6fe455c72af
 
 ## Architecture
 
